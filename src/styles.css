@@ -51,8 +51,10 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-sage-ink: var(--sage-ink);
-  --color-honey: var(--honey);
+  --color-wood: var(--wood);
+  --color-ivy: var(--ivy);
+  --color-coal: var(--coal);
+  --color-coal-foreground: var(--coal-foreground);
   --font-display: "Fraunces", "Noto Naskh Arabic", serif;
   --font-sans: "DM Sans", "Noto Naskh Arabic", sans-serif;
   --color-sidebar: var(--sidebar);
@@ -67,33 +69,44 @@
 
 :root {
   --radius: 1rem;
-  --background: oklch(0.977 0.01 86.8);
-  --foreground: oklch(0.272 0.01 58);
+  /* warm light concrete / cream */
+  --background: oklch(0.94 0.02 88);
+  /* charcoal */
+  --foreground: oklch(0.22 0.01 60);
   --card: oklch(1 0 0);
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
-  --primary: oklch(0.661 0.088 120.2);
-  --primary-foreground: var(--foreground);
-  --secondary: oklch(0.61 0.137 41.4);
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.936 0.022 83);
-  --muted-foreground: oklch(0.465 0.019 63);
+  /* mustard yellow */
+  --primary: oklch(0.79 0.15 87);
+  --primary-foreground: oklch(0.22 0.01 60);
+  /* brick red */
+  --secondary: oklch(0.5 0.13 38);
+  --secondary-foreground: oklch(0.97 0.015 88);
+  /* sand */
+  --muted: oklch(0.9 0.028 82);
+  --muted-foreground: oklch(0.42 0.02 60);
   --accent: var(--primary);
   --accent-foreground: var(--foreground);
-  --sage-ink: oklch(0.442 0.065 120);
-  --honey: oklch(0.801 0.158 88.8);
+  /* warm wood brown */
+  --wood: oklch(0.62 0.09 62);
+  /* ivy green — tiny details only */
+  --ivy: oklch(0.49 0.075 128);
+  /* charcoal sections (navbar, footer) */
+  --coal: oklch(0.22 0.01 60);
+  --coal-foreground: oklch(0.94 0.02 88);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.859 0.023 83);
+  --border: oklch(0.85 0.03 80);
   --input: var(--border);
-  --ring: var(--sage-ink);
-  --shadow-natural: 0 12px 32px -16px color-mix(in oklab, var(--foreground) 18%, transparent);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --ring: var(--secondary);
+  --shadow-warm: 0 14px 34px -16px color-mix(in oklab, var(--wood) 45%, transparent);
+  --glow-warm: 0 0 42px 6px color-mix(in oklab, var(--primary) 45%, transparent);
+  --chart-1: oklch(0.5 0.13 38);
+  --chart-2: oklch(0.79 0.15 87);
+  --chart-3: oklch(0.62 0.09 62);
+  --chart-4: oklch(0.49 0.075 128);
+  --chart-5: oklch(0.42 0.02 60);
   --sidebar: var(--card);
   --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--primary);
@@ -119,15 +132,51 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 body { font-family: var(--font-sans); letter-spacing: 0; }
 html[dir="rtl"] body { font-family: "Noto Naskh Arabic", serif; }
 html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
-@utility shadow-natural { box-shadow: var(--shadow-natural); }
+@utility shadow-warm { box-shadow: var(--shadow-warm); }
+@utility glow-warm { box-shadow: var(--glow-warm); }
+@utility arch-mask { border-radius: 999px 999px var(--radius-xl) var(--radius-xl); }
+
+/* soft warm glow behind key headings, like the ring lights */
+@utility heading-glow {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -30% -18%;
+    z-index: -1;
+    border-radius: 999px;
+    background: radial-gradient(closest-side, color-mix(in oklab, var(--primary) 38%, transparent), transparent);
+    filter: blur(10px);
+  }
+}
+
+/* subtle concrete grain on alternating sections */
+@utility grain {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.25;
+    background-image: repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in oklab, var(--wood) 12%, transparent) 3px 4px);
+  }
+}
+
+@keyframes flame-flicker {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  30% { transform: scale(1.06) rotate(-2deg); opacity: 0.92; }
+  60% { transform: scale(0.97) rotate(2deg); opacity: 1; }
+}
+@utility flame-flicker { animation: flame-flicker 2.6s ease-in-out infinite; transform-origin: 50% 90%; }
+
 .hero-section { padding-top: 120px; padding-bottom: 72px; }
 .hero-layout { min-height: min(650px, calc(100svh - 205px)); }
 .hero-photo-wrap { height: 580px; max-height: 66svh; }
-.hero-photo { border-radius: 48% 48% 3% 3%; object-position: 55% center; }
+.hero-photo { object-position: 55% center; }
 .hero-photo-label { position: absolute; bottom: 24px; inset-inline-start: -24px; border-radius: 8px; }
-.botanical-accent { position: absolute; top: -28px; inset-inline-end: -32px; color: var(--sage-ink); transform: rotate(-28deg); }
-.botanical-accent svg { width: 95px; height: 120px; }
-.hero-section::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .22; background-image: repeating-linear-gradient(0deg, transparent 0px 3px, color-mix(in oklab, var(--border) 30%, transparent) 3px 4px); }
+.flame-accent { position: absolute; top: -30px; inset-inline-end: -26px; color: var(--secondary); }
+.flame-accent svg { width: 84px; height: 110px; }
 @supports (animation-timeline: scroll()) {
   @keyframes photo-drift { to { transform: translateY(18px); } }
   .hero-photo { animation: photo-drift linear both; animation-timeline: scroll(); animation-range: 0px 700px; }
@@ -139,7 +188,7 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
   .hero-layout { gap: 32px; min-height: auto; }
   .hero-photo-wrap { height: 340px; max-height: none; margin-inline: 12px; }
   .hero-photo-label { bottom: 16px; inset-inline-start: -12px; padding: 12px 16px; }
-  .botanical-accent { inset-inline-end: -22px; top: -24px; }
-  .botanical-accent svg { width: 68px; height: 85px; }
+  .flame-accent { inset-inline-end: -18px; top: -24px; }
+  .flame-accent svg { width: 60px; height: 80px; }
 }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .hero-photo, .reveal { animation: none; opacity: 1; transform: none; transition: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .hero-photo, .reveal, .flame-flicker { animation: none; opacity: 1; transform: none; transition: none; } }

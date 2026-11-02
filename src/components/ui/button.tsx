@@ -7,6 +7,7 @@ export const buttonVariants = cva("inline-flex shrink-0 items-center justify-cen
   variants: {
     variant: {
       default: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+      mustard: "bg-primary text-primary-foreground hover:bg-primary/90",
       secondary: "bg-muted text-foreground hover:bg-muted/80",
       destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
       outline: "border border-border bg-background text-foreground hover:bg-muted",
