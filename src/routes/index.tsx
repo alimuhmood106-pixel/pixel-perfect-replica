@@ -49,7 +49,7 @@ export const Route = createFileRoute("/")({
 });
 
 const dishImgs = [wrap, chicken, burger, pasta, plate];
-const gallery = [carving, wrap, chicken, burger, pasta, plate, team, interior, logo];
+const gallery = [carving, meatCarving, wrap, chicken, burger, chickenBurger, pasta, plate, cheesyBake, team, interior];
 const whyIcons = [Flame, Bike, Clock, Smile];
 
 function Index() {
