@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { DICT, LANGS, type Lang } from "@/lib/i18n";
 import logo from "@/assets/logo.jpg.asset.json";
 import carving from "@/assets/shawarma-carving.jpg.asset.json";
+import meatCarving from "@/assets/meat-carving.jpg.asset.json";
+import chickenBurger from "@/assets/chicken-burger.jpg.asset.json";
+import cheesyBake from "@/assets/cheesy-bake.jpg.asset.json";
 import wrap from "@/assets/shawarma-wrap.jpg.asset.json";
 import chicken from "@/assets/grilled-chicken.jpg.asset.json";
 import burger from "@/assets/cheeseburger.jpg.asset.json";
@@ -46,7 +49,7 @@ export const Route = createFileRoute("/")({
 });
 
 const dishImgs = [wrap, chicken, burger, pasta, plate];
-const gallery = [carving, wrap, chicken, burger, pasta, plate, team, interior, logo];
+const gallery = [carving, meatCarving, wrap, chicken, burger, chickenBurger, pasta, plate, cheesyBake, team, interior];
 const whyIcons = [Flame, Bike, Clock, Smile];
 
 function Index() {
