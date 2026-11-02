@@ -135,7 +135,7 @@ function Index() {
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {t.dishes.map(([name, desc], i) => (
             <article key={i} className="reveal group overflow-hidden rounded-2xl border border-border bg-card">
-              <div className="aspect-[4/3] overflow-hidden"><img loading="lazy" src={dishImgs[i].url} alt={name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" /></div>
+              <div className="aspect-[4/3] overflow-hidden"><img loading="lazy" src={dishImgs[i]?.url} alt={name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" /></div>
               <div className="p-5"><h3 className="font-display text-2xl text-primary">{name}</h3><p className="mt-1 text-muted-foreground">{desc}</p></div>
             </article>
           ))}
@@ -157,7 +157,7 @@ function Index() {
       <section className="mx-auto max-w-6xl px-4 py-20">
         <h2 className={`reveal text-center ${heading}`}>{t.whyTitle}</h2>
         <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
-          {t.why.map((w, i) => { const I = whyIcons[i]; return (
+          {t.why.map((w, i) => { const I = whyIcons[i] ?? Flame; return (
             <div key={i} className="reveal rounded-2xl border border-border bg-card p-6 text-center">
               <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-fire text-primary-foreground"><I /></div>
               <p className="mt-4 font-bold">{w}</p>
