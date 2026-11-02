@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Phone, Instagram, Facebook, Flame, Bike, Clock, Smile, MapPin, Menu, X, ArrowUpRight, Leaf, ArrowRight } from "lucide-react";
+import { Phone, Instagram, Facebook, Flame, Bike, Clock, Smile, MapPin, Menu, X, ArrowUpRight, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DICT, LANGS, type Lang } from "@/lib/i18n";
 import logo from "@/assets/logo.jpg.asset.json";
@@ -88,99 +88,120 @@ function Index() {
     ["gallery", t.nav.gallery], ["visit", t.nav.visit], ["contact", t.nav.contact],
   ] as const;
 
-  const heading = "font-display text-4xl sm:text-5xl text-foreground";
+  const heading = "heading-glow font-display text-4xl sm:text-5xl text-foreground";
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navbar */}
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-border/60 bg-background/95 backdrop-blur">
+      <header className="fixed inset-x-0 top-0 z-40 bg-coal text-coal-foreground">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4">
-          <a href="#home" className="flex shrink-0 items-center gap-2">
-            <img src={logo.url} alt="Malik Al-Sham logo" className="h-12 w-12 rounded-xl" />
-            <span className="hidden font-display text-xl text-foreground sm:inline">Malik Al-Sham</span>
+          <a href="#home" className="flex shrink-0 items-center gap-3">
+            <span className="grid h-12 w-12 place-items-center overflow-hidden rounded-xl bg-foreground ring-1 ring-primary/60">
+              <img src={logo.url} alt="Malik Al-Sham logo" className="h-full w-full object-cover" />
+            </span>
+            <span className="hidden font-display text-xl text-coal-foreground sm:inline">Malik Al-Sham</span>
           </a>
           <nav className="hidden items-center gap-5 text-sm lg:flex">
             {links.map(([id, l]) => <a key={id} href={`#${id}`} className="hover:text-primary">{l}</a>)}
           </nav>
           <div className="flex items-center gap-2">
-            <div className="flex rounded-lg border border-border p-0.5 text-xs">
+            <div className="flex rounded-lg border border-coal-foreground/25 p-0.5 text-xs">
               {LANGS.map((l) => (
                 <Button variant="ghost" key={l.code} onClick={() => setLang(l.code)} aria-pressed={lang === l.code}
-                  className={`min-h-8 rounded-md px-2.5 py-1.5 text-xs ${lang === l.code ? "bg-primary text-primary-foreground hover:bg-primary" : "text-muted-foreground"}`}>{l.label}</Button>
+                  className={`min-h-8 rounded-md px-2.5 py-1.5 text-xs ${lang === l.code ? "bg-primary text-primary-foreground hover:bg-primary" : "text-coal-foreground/70 hover:bg-coal-foreground/10 hover:text-coal-foreground"}`}>{l.label}</Button>
               ))}
             </div>
-            <Button asChild className="hidden sm:inline-flex"><a href={TEL}><Phone size={16} />{t.call}</a></Button>
-            <Button variant="ghost" size="icon" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open} className="lg:hidden">{open ? <X /> : <Menu />}</Button>
+            <Button asChild variant="mustard" className="hidden sm:inline-flex"><a href={TEL}><Phone size={16} />{t.call}</a></Button>
+            <Button variant="ghost" size="icon" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open} className="text-coal-foreground hover:bg-coal-foreground/10 hover:text-coal-foreground lg:hidden">{open ? <X /> : <Menu />}</Button>
           </div>
         </div>
         {open && (
-          <nav className="flex flex-col border-t border-border bg-background px-4 pb-4 lg:hidden">
-            {links.map(([id, l]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)} className="py-3 text-lg">{l}</a>)}
-            <div className="flex gap-4 pt-2"><Social /></div>
+          <nav className="flex flex-col border-t border-coal-foreground/15 bg-coal px-4 pb-4 lg:hidden">
+            {links.map(([id, l]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)} className="py-3 text-lg hover:text-primary">{l}</a>)}
+            <div className="flex gap-4 pt-2"><Social dark /></div>
           </nav>
         )}
       </header>
 
       {/* Hero */}
-      <section id="home" className="hero-section relative overflow-hidden">
+      <section id="home" className="hero-section grain relative overflow-hidden">
         <div className="hero-layout mx-auto grid max-w-7xl items-center gap-10 px-6 md:grid-cols-2 lg:gap-16">
           <div className="relative z-10 py-4">
-            <div className="mb-6 flex items-center gap-3 text-sm text-sage-ink"><span className="h-px w-8 bg-primary" /><span>{t.heroEyebrow}</span></div>
-            <h1 className="font-display text-5xl leading-[1.12] text-foreground lg:text-7xl">{lang === "en" ? "Malik Al-Sham" : "ملك الشام"}</h1>
-            <p className="mt-5 max-w-lg font-display text-2xl leading-relaxed text-sage-ink">{t.tagline}</p>
+            <div className="mb-6 flex items-center gap-3 text-sm font-semibold text-secondary"><Flame size={16} className="flame-flicker" /><span>{t.heroEyebrow}</span></div>
+            <h1 className="heading-glow font-display text-5xl leading-[1.12] text-foreground lg:text-7xl">{lang === "en" ? "Malik Al-Sham" : "ملك الشام"}</h1>
+            <p className="mt-5 max-w-lg font-display text-2xl leading-relaxed text-secondary">{t.tagline}</p>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">{t.sub}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
-              <Button asChild variant="outline"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
+              <Button asChild variant="mustard" className="glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
+              <Button asChild variant="outline" className="border-secondary text-secondary hover:bg-secondary/10 hover:text-secondary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
             </div>
-            <div className="mt-9 flex items-center gap-2 text-sm text-muted-foreground"><Clock size={16} className="text-sage-ink" />{t.hoursVal}</div>
+            <div className="mt-9 flex items-center gap-2 text-sm text-muted-foreground"><Clock size={16} className="text-wood" />{t.hoursVal}</div>
           </div>
           <div className="hero-photo-wrap relative">
-            <img src={carving.url} alt="Chef carving shawarma at Malik Al-Sham" className="hero-photo h-full w-full object-cover" fetchPriority="high" />
-            <span className="botanical-accent" aria-hidden="true"><Leaf strokeWidth={0.7} /></span>
-            <div className="hero-photo-label flex items-center gap-3 bg-background px-5 py-4 shadow-natural"><Leaf className="text-sage-ink" size={24} /><span className="font-display text-lg">{t.freshLabel}</span></div>
+            <img src={carving.url} alt="Chef carving shawarma at Malik Al-Sham" className="hero-photo arch-mask h-full w-full object-cover shadow-warm" fetchPriority="high" />
+            <span className="flame-accent flame-flicker" aria-hidden="true"><Flame strokeWidth={1} fill="currentColor" className="text-primary" /></span>
+            <div className="hero-photo-label flex items-center gap-3 bg-card px-5 py-4 shadow-warm"><Flame className="flame-flicker text-secondary" size={24} /><span className="font-display text-lg">{t.freshLabel}</span></div>
           </div>
         </div>
       </section>
 
       {/* Popular */}
       <section id="popular" className="mx-auto max-w-7xl px-6 py-20">
-        <div className="reveal text-center"><h2 className={heading}>{t.popularTitle}</h2><p className="mt-2 text-muted-foreground">{t.popularSub}</p></div>
+        <div className="reveal text-center">
+          <Flame className="flame-flicker mx-auto mb-3 text-secondary" size={28} />
+          <h2 className={heading}>{t.popularTitle}</h2>
+          <p className="mt-2 text-muted-foreground">{t.popularSub}</p>
+        </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {t.dishes.map(([name, desc], i) => (
-            <article key={i} className="reveal group overflow-hidden rounded-xl border border-border/60 bg-card shadow-natural">
+            <article key={i} className="reveal group overflow-hidden rounded-xl border border-border/60 bg-card shadow-warm">
               <div className="aspect-[4/3] overflow-hidden"><img loading="lazy" src={dishImgs[i]?.url} alt={name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" /></div>
-              <div className="p-6"><span className="mb-3 inline-block rounded-md bg-primary/15 px-2.5 py-1 text-xs font-semibold text-sage-ink">{i === 0 ? t.chefFavorite : t.freshLabel}</span><h3 className="font-display text-2xl text-foreground">{name}</h3><p className="mt-1 text-muted-foreground">{desc}</p></div>
+              <div className="p-6">
+                <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-primary/25 px-2.5 py-1 text-xs font-semibold text-secondary"><Flame size={12} className="flame-flicker" />{i === 0 ? t.chefFavorite : t.freshLabel}</span>
+                <h3 className="font-display text-2xl text-foreground">{name}</h3>
+                <p className="mt-1 text-muted-foreground">{desc}</p>
+              </div>
             </article>
           ))}
         </div>
       </section>
 
+      <FlameDivider />
+
       {/* About */}
-      <section id="about" className="bg-muted py-24">
+      <section id="about" className="grain bg-muted py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 md:grid-cols-2">
-          <div className="reveal"><h2 className={heading}>{t.aboutTitle}</h2><p className="mt-5 text-lg">{t.about1}</p><p className="mt-4 text-lg text-muted-foreground">{t.about2}</p></div>
+          <div className="reveal">
+            <Flame className="flame-flicker mb-3 text-secondary" size={28} />
+            <h2 className={heading}>{t.aboutTitle}</h2>
+            <p className="mt-5 text-lg">{t.about1}</p>
+            <p className="mt-4 text-lg text-muted-foreground">{t.about2}</p>
+          </div>
           <div className="reveal grid grid-cols-2 gap-4">
-            <img loading="lazy" src={carving.url} alt="Malik Al-Sham kitchen" className="aspect-[3/4] w-full rounded-t-[8rem] rounded-b-xl object-cover" />
-            <img loading="lazy" src={team.url} alt="Malik Al-Sham team" className="mt-8 aspect-[3/4] w-full rounded-t-[8rem] rounded-b-xl object-cover" />
+            <img loading="lazy" src={carving.url} alt="Malik Al-Sham kitchen" className="arch-mask aspect-[3/4] w-full object-cover shadow-warm" />
+            <img loading="lazy" src={team.url} alt="Malik Al-Sham team" className="arch-mask mt-8 aspect-[3/4] w-full object-cover shadow-warm" />
           </div>
         </div>
       </section>
 
       {/* Why */}
       <section className="mx-auto max-w-7xl px-6 py-20">
+        <Flame className="flame-flicker reveal mx-auto mb-3 text-secondary" size={28} />
         <h2 className={`reveal text-center ${heading}`}>{t.whyTitle}</h2>
         <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
           {t.why.map((w, i) => { const I = whyIcons[i] ?? Flame; return (
-            <div key={i} className="reveal p-6 text-center">
-              <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary/20 text-sage-ink"><I /></div>
+            <div key={i} className="reveal rounded-xl border border-wood/30 bg-card p-6 text-center shadow-warm">
+              <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary/25 text-secondary"><I /></div>
               <p className="mt-4 font-bold">{w}</p>
             </div>); })}
         </div>
       </section>
 
+      <FlameDivider />
+
       {/* Gallery */}
       <section id="gallery" className="mx-auto max-w-7xl px-4 pb-20">
+        <Flame className="flame-flicker reveal mx-auto mb-3 text-secondary" size={28} />
         <h2 className={`reveal text-center ${heading}`}>{t.galleryTitle}</h2>
         <div className="mt-10 columns-2 gap-3 md:columns-3">
           {gallery.map((g, i) => (
@@ -191,61 +212,78 @@ function Index() {
         </div>
       </section>
       {lightbox && (
-        <div role="dialog" aria-modal="true" aria-label={t.galleryTitle} onClick={() => setLightbox(null)} className="fixed inset-0 z-50 grid place-items-center bg-background/95 p-4">
-          <Button variant="ghost" size="icon" aria-label="Close" className="absolute end-4 top-4" onClick={() => setLightbox(null)}><X /></Button>
+        <div role="dialog" aria-modal="true" aria-label={t.galleryTitle} onClick={() => setLightbox(null)} className="fixed inset-0 z-50 grid place-items-center bg-coal/95 p-4">
+          <Button variant="ghost" size="icon" aria-label="Close" className="absolute end-4 top-4 text-coal-foreground hover:bg-coal-foreground/10 hover:text-coal-foreground" onClick={() => setLightbox(null)}><X /></Button>
           <img src={lightbox} alt="" className="max-h-[85vh] max-w-full rounded-xl" />
         </div>
       )}
 
       {/* Visit */}
-      <section id="visit" className="bg-muted">
+      <section id="visit" className="grain bg-muted">
         <div className="relative h-56 sm:h-80"><img loading="lazy" src={interior.url} alt="Malik Al-Sham dining room" className="h-full w-full object-cover" /></div>
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 md:grid-cols-2">
           <div className="reveal space-y-6">
+            <Flame className="flame-flicker text-secondary" size={28} />
             <h2 className={heading}>{t.visitTitle}</h2>
-            <div className="flex gap-3"><MapPin className="shrink-0 text-primary" /><div><p className="font-bold">{t.address}</p><p className="text-muted-foreground" dir="ltr">HC53+M3P, Sulaymaniyah, Iraq</p></div></div>
-            <div className="flex gap-3"><Clock className="shrink-0 text-primary" /><div><p className="font-bold">{t.hours}</p><p className="text-muted-foreground">{t.hoursVal}</p></div></div>
+            <div className="flex gap-3"><MapPin className="shrink-0 text-secondary" /><div><p className="font-bold">{t.address}</p><p className="text-muted-foreground" dir="ltr">HC53+M3P, Sulaymaniyah, Iraq</p></div></div>
+            <div className="flex gap-3"><Clock className="shrink-0 text-secondary" /><div><p className="font-bold">{t.hours}</p><p className="text-muted-foreground">{t.hoursVal}</p></div></div>
             <Button asChild><a href={`https://www.google.com/maps/dir/?api=1&destination=${MAP_Q}`} target="_blank" rel="noopener noreferrer"><MapPin size={18} />{t.directions}<ArrowUpRight size={16} /></a></Button>
           </div>
-          <iframe title="Map" loading="lazy" src={`https://maps.google.com/maps?q=${MAP_Q}&z=16&output=embed`} className="reveal h-80 w-full rounded-2xl border-0" />
+          <iframe title="Map" loading="lazy" src={`https://maps.google.com/maps?q=${MAP_Q}&z=16&output=embed`} className="reveal h-80 w-full rounded-2xl border-0 shadow-warm" />
         </div>
       </section>
 
       {/* Contact */}
       <section id="contact" className="mx-auto max-w-3xl px-6 py-20 text-center">
+        <Flame className="flame-flicker reveal mx-auto mb-3 text-secondary" size={28} />
         <h2 className={`reveal ${heading}`}>{t.contactTitle}</h2>
         <p className="reveal mt-3 text-lg text-muted-foreground">{t.contactSub}</p>
         <a href={TEL} className="reveal mt-8 block font-display text-3xl text-secondary sm:text-4xl" dir="ltr">+964 772 800 4848</a>
         <div className="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button asChild><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
+          <Button asChild variant="mustard" className="glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
         </div>
         <p className="reveal mt-6 text-muted-foreground">{t.delivery}</p>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-muted px-4 pb-28 pt-12 sm:pb-12">
+      <footer className="bg-coal px-4 pb-28 pt-12 text-coal-foreground sm:pb-12">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 text-center">
-          <img src={logo.url} alt="Malik Al-Sham logo" className="h-20 w-20 rounded-xl" loading="lazy" />
+          <span className="grid h-20 w-20 place-items-center overflow-hidden rounded-xl bg-foreground ring-1 ring-primary/60">
+            <img src={logo.url} alt="Malik Al-Sham logo" className="h-full w-full object-cover" loading="lazy" />
+          </span>
           <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm">{links.map(([id, l]) => <a key={id} href={`#${id}`} className="hover:text-primary">{l}</a>)}</nav>
-          <div className="flex gap-4"><Social /></div>
-          <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Malik Al-Sham · ملك الشام. {t.rights}</p>
+          <div className="flex gap-4"><Social dark /></div>
+          <p className="text-sm text-coal-foreground/70">© {new Date().getFullYear()} Malik Al-Sham · ملك الشام. {t.rights}</p>
         </div>
       </footer>
 
       {/* Floating buttons */}
       <div className="fixed bottom-5 end-4 z-40 flex flex-col gap-3">
-        <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-12 w-12 place-items-center rounded-full border border-border bg-card"><Instagram /></a>
-        <a href={TEL} aria-label={t.call} className="grid h-14 w-14 place-items-center rounded-full bg-secondary text-secondary-foreground shadow-natural sm:hidden"><Phone /></a>
+        <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-12 w-12 place-items-center rounded-full border border-border bg-card shadow-warm hover:text-secondary"><Instagram /></a>
+        <a href={TEL} aria-label={t.call} className="grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground glow-warm sm:hidden"><Phone /></a>
       </div>
     </div>
   );
 }
 
-function Social() {
+function FlameDivider() {
+  return (
+    <div className="flex items-center justify-center gap-4" aria-hidden="true">
+      <span className="h-px w-16 bg-wood/50" />
+      <Flame size={20} className="flame-flicker text-primary" fill="currentColor" />
+      <span className="h-px w-16 bg-wood/50" />
+    </div>
+  );
+}
+
+function Social({ dark = false }: { dark?: boolean }) {
+  const cls = dark
+    ? "grid h-11 w-11 place-items-center rounded-full border border-coal-foreground/25 hover:text-primary"
+    : "grid h-11 w-11 place-items-center rounded-full border border-border hover:text-secondary";
   return (
     <>
-      <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-11 w-11 place-items-center rounded-full border border-border hover:text-primary"><Instagram /></a>
-      <a href={FB} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="grid h-11 w-11 place-items-center rounded-full border border-border hover:text-primary"><Facebook /></a>
+      <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className={cls}><Instagram /></a>
+      <a href={FB} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className={cls}><Facebook /></a>
     </>
   );
 }
