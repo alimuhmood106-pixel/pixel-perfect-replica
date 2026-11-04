@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Phone, Instagram, Facebook, Flame, Bike, Clock, Smile, MapPin, Menu, X, ArrowUpRight, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DICT, LANGS, type Lang } from "@/lib/i18n";
 import logo from "@/assets/logo.jpg.asset.json";
-import heroBg from "@/assets/hero-spit-bg.jpg.asset.json";
 import carving from "@/assets/shawarma-carving.jpg.asset.json";
 import meatCarving from "@/assets/meat-carving.jpg.asset.json";
 import chickenBurger from "@/assets/chicken-burger.jpg.asset.json";
@@ -57,9 +56,17 @@ function Index() {
   const [lang, setLang] = useState<Lang>("en");
   const [open, setOpen] = useState(false);
   const [lightbox, setLightbox] = useState<string | null>(null);
+  const heroVideo = useRef<HTMLVideoElement>(null);
   const t = DICT[lang];
   const rtl = lang !== "en";
 
+  useEffect(() => {
+    // React doesn't always render the muted attribute on server HTML, and iOS blocks autoplay without it.
+    const v = heroVideo.current;
+    if (!v) return;
+    v.muted = true;
+    v.play().catch(() => {});
+  }, []);
   useEffect(() => {
     const saved = localStorage.getItem("lang") as Lang | null;
     if (saved && DICT[saved]) setLang(saved);
@@ -126,32 +133,31 @@ function Index() {
       </header>
 
       {/* Hero */}
-      <section id="home" className="hero-section relative overflow-hidden border-b-4 border-primary bg-coal text-coal-foreground">
-        <div aria-hidden className="hero-bg" style={{ backgroundImage: `url(${heroBg.url})` }} />
-        <div className="hero-layout mx-auto flex max-w-5xl flex-col items-center gap-10 px-6 text-center">
-          <div className="hero-photo-wrap relative w-full">
-            <div className="hero-photo-frame h-full w-full overflow-hidden rounded-3xl border-4 border-primary shadow-warm">
-              <img src={carving.url} alt="Chef carving shawarma at Malik Al-Sham" className="hero-photo w-full object-cover" fetchPriority="high" />
-              <div className="hero-fire" aria-hidden="true">
-                {Array.from({ length: 9 }, (_, i) => <span key={i} className="fire-tongue" style={{ "--i": i } as CSSProperties} />)}
-              </div>
-              <div className="hero-embers" aria-hidden="true">
-                {Array.from({ length: 12 }, (_, i) => <span key={i} className="ember" style={{ "--i": i } as CSSProperties} />)}
-              </div>
-            </div>
-            <span className="flame-accent flame-flicker" aria-hidden="true"><Flame strokeWidth={1} fill="currentColor" className="text-primary" /></span>
-            <div className="hero-photo-label flex items-center gap-3 border-2 border-coal bg-primary px-5 py-4 text-primary-foreground shadow-warm"><Flame className="flame-flicker text-secondary" size={24} /><span className="font-display text-lg font-bold">{t.freshLabel}</span></div>
+      <section id="home" className="hero-section relative isolate flex min-h-svh flex-col overflow-hidden bg-coal text-coal-foreground">
+        <video ref={heroVideo} className="hero-video" autoPlay muted loop playsInline preload="auto" poster="/hero-poster.jpg" aria-hidden="true" tabIndex={-1}>
+          <source src="/hero-loop.mp4" type="video/mp4" />
+        </video>
+        <div aria-hidden className="hero-scrim" />
+        <div className="hero-content relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 text-center">
+          <span className="hero-pill inline-flex items-center gap-2 rounded-full border border-primary/60 bg-coal/50 px-4 py-1.5 text-sm text-coal-foreground/90 backdrop-blur-sm"><Clock size={15} className="text-primary" />{t.hoursVal}</span>
+          <h1 className="mt-7">
+            <img src="/logo-wordmark.png" alt={lang === "en" ? "Malik Al-Sham" : "ملك الشام"} width={1908} height={504} fetchPriority="high" className="block h-auto w-full max-w-xs sm:max-w-lg" />
+          </h1>
+          <p className="mt-6 max-w-xl font-display text-2xl leading-snug text-coal-foreground sm:text-4xl">{t.tagline}</p>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <Button asChild variant="mustard" size="lg"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
+            <Button asChild variant="outline" size="lg" className="border-primary bg-transparent text-primary hover:bg-primary/10 hover:text-primary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
           </div>
-          <div className="relative z-10 flex flex-col items-center py-2">
-            <h1>
-              <img src="/logo-wordmark.png" alt={lang === "en" ? "Malik Al-Sham" : "ملك الشام"} width={1908} height={504} fetchPriority="high" className="block h-auto w-full max-w-sm sm:max-w-md" />
-            </h1>
-            <p className="mt-5 max-w-lg text-2xl leading-relaxed text-coal-foreground">{t.tagline}</p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button asChild variant="mustard"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
-              <Button asChild variant="outline" className="border-primary bg-transparent text-primary hover:bg-primary/10 hover:text-primary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
-            </div>
-            <div className="mt-9 flex items-center gap-2 text-sm text-coal-foreground/70"><Clock size={16} className="text-primary" />{t.hoursVal}</div>
+        </div>
+        <div aria-hidden className="hero-marquee relative z-10" dir="ltr">
+          <div className="hero-marquee-track">
+            {Array.from({ length: 6 }, (_, copy) => (
+              <div key={copy} className="hero-marquee-group">
+                {t.dishes.map(([name], i) => (
+                  <span key={i} className="hero-marquee-item"><Flame size={14} fill="currentColor" />{name}</span>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </section>
