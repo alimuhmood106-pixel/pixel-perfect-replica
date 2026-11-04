@@ -91,7 +91,8 @@ function Index() {
   const heading = "heading-glow font-display text-4xl sm:text-5xl text-foreground";
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative isolate min-h-screen bg-background text-foreground">
+      <div aria-hidden className="wrapper-pattern" />
       {/* Navbar */}
       <header className="fixed inset-x-0 top-0 z-40 bg-coal text-coal-foreground">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4">
@@ -169,7 +170,7 @@ function Index() {
       <FlameDivider />
 
       {/* About */}
-      <section id="about" className="grain bg-muted py-24">
+      <section id="about" className="grain bg-muted/85 py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 md:grid-cols-2">
           <div className="reveal">
             <Flame className="flame-flicker mb-3 text-secondary" size={28} />
@@ -219,7 +220,7 @@ function Index() {
       )}
 
       {/* Visit */}
-      <section id="visit" className="grain bg-muted">
+      <section id="visit" className="grain bg-muted/85">
         <div className="relative h-56 sm:h-80"><img loading="lazy" src={interior.url} alt="Malik Al-Sham dining room" className="h-full w-full object-cover" /></div>
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 md:grid-cols-2">
           <div className="reveal space-y-6">
