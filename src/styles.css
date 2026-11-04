@@ -203,7 +203,7 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 @media (max-width: 640px) { .wrapper-pattern { background-size: 210px; opacity: 0.045; } }
 
 .font-logo, html[dir="rtl"] .font-logo { font-family: "Lalezar", var(--font-display); font-weight: 400; letter-spacing: 0.01em; }
-.hero-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; opacity: 0.1; filter: saturate(0.6) blur(1px); pointer-events: none; }
+.hero-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; opacity: 0.16; filter: saturate(0.6) blur(1px); pointer-events: none; }
 .hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--background) 10%, transparent 70%); }
 html[dir="rtl"] .hero-bg::after { background: linear-gradient(270deg, var(--background) 10%, transparent 70%); }
 .hero-layout { position: relative; z-index: 1; }
