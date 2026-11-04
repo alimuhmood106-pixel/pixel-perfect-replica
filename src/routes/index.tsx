@@ -59,6 +59,7 @@ function Index() {
   const [lang, setLang] = useState<Lang>("en");
   const [open, setOpen] = useState(false);
   const [lightbox, setLightbox] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const heroVideoWrap = useRef<HTMLDivElement>(null);
   const t = DICT[lang];
   const rtl = lang !== "en";
@@ -76,6 +77,12 @@ function Index() {
     const onVisible = () => { if (!document.hidden && v.paused) tryPlay(); };
     document.addEventListener("visibilitychange", onVisible);
     return () => { stop(); document.removeEventListener("visibilitychange", onVisible); };
+  }, []);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
   useEffect(() => {
     const saved = localStorage.getItem("lang") as Lang | null;
@@ -112,7 +119,7 @@ function Index() {
     <div className="page-root relative isolate min-h-screen bg-background text-foreground">
       <div aria-hidden className="wrapper-pattern" />
       {/* Navbar */}
-      <header className="fixed inset-x-0 top-0 z-40 border-b-2 border-primary bg-coal text-coal-foreground">
+      <header className={`fixed inset-x-0 top-0 z-40 border-b-2 text-coal-foreground transition-[background-color,border-color,backdrop-filter] duration-300 ${scrolled || open ? "border-primary bg-coal/90 backdrop-blur-md" : "border-transparent bg-transparent"}`}>
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4">
           <a href="#home" className="flex shrink-0 items-center gap-3">
             <span className="grid h-12 w-12 place-items-center overflow-hidden rounded-xl bg-foreground ring-1 ring-primary/60">
