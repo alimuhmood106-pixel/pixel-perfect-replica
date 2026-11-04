@@ -48,6 +48,9 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+// Raw HTML so the muted/autoplay/playsinline attributes are in the server-rendered markup (React drops `muted` there, and iOS then blocks autoplay).
+const HERO_VIDEO_HTML = '<video autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1" poster="/hero-poster.jpg"><source src="/hero-loop.mp4" type="video/mp4"></video>';
+
 const dishImgs = [wrap, chicken, burger, pasta, plate];
 const gallery = [carving, meatCarving, wrap, chicken, burger, chickenBurger, pasta, plate, cheesyBake, team, interior];
 const whyIcons = [Flame, Bike, Clock, Smile];
@@ -56,16 +59,23 @@ function Index() {
   const [lang, setLang] = useState<Lang>("en");
   const [open, setOpen] = useState(false);
   const [lightbox, setLightbox] = useState<string | null>(null);
-  const heroVideo = useRef<HTMLVideoElement>(null);
+  const heroVideoWrap = useRef<HTMLDivElement>(null);
   const t = DICT[lang];
   const rtl = lang !== "en";
 
   useEffect(() => {
-    // React doesn't always render the muted attribute on server HTML, and iOS blocks autoplay without it.
-    const v = heroVideo.current;
+    const v = heroVideoWrap.current?.querySelector("video");
     if (!v) return;
     v.muted = true;
-    v.play().catch(() => {});
+    const tryPlay = () => v.play().then(() => true, () => false);
+    // Some phones (Low Power Mode, in-app browsers) refuse autoplay: retry on the first touch, click or scroll.
+    const events = ["touchstart", "pointerdown", "click", "keydown", "scroll"] as const;
+    const stop = () => events.forEach((e) => window.removeEventListener(e, onGesture));
+    const onGesture = () => { tryPlay().then((ok) => ok && stop()); };
+    tryPlay().then((ok) => { if (!ok) events.forEach((e) => window.addEventListener(e, onGesture, { passive: true })); });
+    const onVisible = () => { if (!document.hidden && v.paused) tryPlay(); };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => { stop(); document.removeEventListener("visibilitychange", onVisible); };
   }, []);
   useEffect(() => {
     const saved = localStorage.getItem("lang") as Lang | null;
@@ -134,9 +144,7 @@ function Index() {
 
       {/* Hero */}
       <section id="home" className="hero-section relative isolate flex min-h-svh flex-col overflow-hidden bg-coal text-coal-foreground">
-        <video ref={heroVideo} className="hero-video" autoPlay muted loop playsInline preload="auto" poster="/hero-poster.jpg" aria-hidden="true" tabIndex={-1}>
-          <source src="/hero-loop.mp4" type="video/mp4" />
-        </video>
+        <div ref={heroVideoWrap} aria-hidden className="hero-video" dangerouslySetInnerHTML={{ __html: HERO_VIDEO_HTML }} />
         <div aria-hidden className="hero-scrim" />
         <div className="hero-content relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 text-center">
           <span className="hero-pill inline-flex items-center gap-2 rounded-full border border-primary/60 bg-coal/50 px-4 py-1.5 text-sm text-coal-foreground/90 backdrop-blur-sm"><Clock size={15} className="text-primary" />{t.hoursVal}</span>
@@ -147,17 +155,6 @@ function Index() {
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <Button asChild variant="mustard" size="lg"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
             <Button asChild variant="outline" size="lg" className="border-primary bg-transparent text-primary hover:bg-primary/10 hover:text-primary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
-          </div>
-        </div>
-        <div aria-hidden className="hero-marquee relative z-10" dir="ltr">
-          <div className="hero-marquee-track">
-            {Array.from({ length: 6 }, (_, copy) => (
-              <div key={copy} className="hero-marquee-group">
-                {t.dishes.map(([name], i) => (
-                  <span key={i} className="hero-marquee-item"><Flame size={14} fill="currentColor" />{name}</span>
-                ))}
-              </div>
-            ))}
           </div>
         </div>
       </section>

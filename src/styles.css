@@ -171,32 +171,26 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 }
 @utility flame-flicker { animation: flame-flicker 2.6s ease-in-out infinite; transform-origin: 50% 90%; }
 
-/* Hero: low-key looping video behind a warm charcoal scrim, ticker along the bottom edge */
+/* Hero: low-key looping video behind a warm charcoal scrim that fades into the page background */
 .hero-section { padding-top: 80px; background-size: cover; background-position: center; }
-.hero-video { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; filter: saturate(0.7) contrast(1.05); pointer-events: none; }
+.hero-video { position: absolute; inset: 0; z-index: -2; pointer-events: none; }
+.hero-video video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; filter: saturate(0.7) contrast(1.05); }
+.hero-video video::-webkit-media-controls,
+.hero-video video::-webkit-media-controls-start-playback-button,
+.hero-video video::-webkit-media-controls-overlay-play-button { display: none !important; -webkit-appearance: none; }
 .hero-scrim { position: absolute; inset: 0; z-index: -1; pointer-events: none; background:
+  linear-gradient(to bottom, transparent 62%, color-mix(in oklab, var(--background) 45%, transparent) 80%, color-mix(in oklab, var(--background) 85%, transparent) 93%, var(--background) 100%),
   radial-gradient(ellipse at 50% 45%, color-mix(in oklab, var(--coal) 58%, transparent) 0%, color-mix(in oklab, var(--coal) 82%, transparent) 100%),
-  linear-gradient(to bottom, color-mix(in oklab, var(--coal) 70%, transparent) 0%, transparent 28%, transparent 70%, var(--coal) 100%); }
-.hero-content { padding-top: 40px; padding-bottom: 56px; }
+  linear-gradient(to bottom, color-mix(in oklab, var(--coal) 70%, transparent) 0%, transparent 22%); }
+.hero-content { padding-top: 40px; padding-bottom: 120px; }
 .hero-content > * { text-shadow: 0 2px 24px color-mix(in oklab, var(--coal) 80%, transparent); }
-.hero-marquee { overflow: hidden; border-block: 2px solid var(--primary); background: var(--primary); color: var(--primary-foreground); }
-.hero-marquee-track { display: flex; width: max-content; animation: hero-marquee 48s linear infinite; }
-.hero-marquee-group { display: flex; flex-shrink: 0; }
-.hero-marquee-item { display: inline-flex; align-items: center; gap: 0.75rem; padding: 0.7rem 1.5rem; font-family: var(--font-display); font-size: 1rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
-.hero-marquee-item svg { color: var(--secondary); }
-@keyframes hero-marquee { to { transform: translateX(-50%); } }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.in { opacity: 1; transform: none; }
-@media (max-width: 767px) {
-  .hero-content { padding-bottom: 40px; }
-  .hero-marquee-item { padding: 0.6rem 1.1rem; font-size: 0.875rem; }
-}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal, .flame-flicker { animation: none; opacity: 1; transform: none; transition: none; }
   .hero-video { display: none; }
   .hero-section { background-image: url("/hero-poster.jpg"); }
-  .hero-marquee-track { animation: none; }
 }
 
 /* Faint wrapper-paper watermark behind cream/sand sections */
