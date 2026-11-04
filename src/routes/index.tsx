@@ -234,15 +234,21 @@ function Index() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="mx-auto max-w-3xl px-6 py-20 text-center">
-        <Flame className="flame-flicker reveal mx-auto mb-3 text-secondary" size={28} />
-        <h2 className={`reveal ${heading}`}>{t.contactTitle}</h2>
-        <p className="reveal mt-3 text-lg text-muted-foreground">{t.contactSub}</p>
-        <a href={TEL} className="reveal mt-8 block text-3xl text-secondary sm:text-4xl" dir="ltr">+964 772 800 4848</a>
-        <div className="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button asChild variant="mustard" className="glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
+      <section id="contact" className="mx-auto max-w-3xl px-4 py-20">
+        <div className="reveal relative isolate overflow-hidden rounded-3xl border border-border/60 border-t-8 border-t-primary bg-card px-6 py-12 text-center shadow-warm sm:px-12">
+          <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-full bg-primary/60 text-secondary"><Phone size={28} /></div>
+          <h2 className={heading}>{t.contactTitle}</h2>
+          <p className="mx-auto mt-3 max-w-md text-lg text-muted-foreground">{t.contactSub}</p>
+          <a href={TEL} dir="ltr" className="mt-8 inline-block rounded-2xl border-2 border-primary bg-primary/15 px-4 py-4 text-2xl font-bold text-secondary transition-colors hover:bg-primary/35 sm:px-8 sm:text-4xl">+964 772 800 4848</a>
+          <div className="mt-6 flex justify-center">
+            <Button asChild variant="mustard" size="lg" className="glow-warm w-full sm:w-auto"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
+          </div>
+          <div className="mt-10 grid gap-3 border-t border-border/60 pt-6 text-sm text-muted-foreground sm:grid-cols-2">
+            <div className="flex items-center justify-center gap-2"><Clock size={16} className="shrink-0 text-secondary" />{t.hoursVal}</div>
+            <div className="flex items-center justify-center gap-2"><MapPin size={16} className="shrink-0 text-secondary" />{t.delivery}</div>
+          </div>
+          <div className="mt-6 flex justify-center gap-4"><Social /></div>
         </div>
-        <p className="reveal mt-6 text-muted-foreground">{t.delivery}</p>
       </section>
 
       {/* Footer */}
