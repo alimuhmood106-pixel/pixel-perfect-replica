@@ -205,10 +205,11 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 @media (max-width: 640px) { .wrapper-pattern { background-size: 210px; opacity: 0.08; } }
 
 .font-logo, html[dir="rtl"] .font-logo { font-family: "Lalezar", var(--font-display); font-weight: 400; letter-spacing: 0.01em; }
-.hero-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; opacity: 0.3; filter: saturate(0.75); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 100%); pointer-events: none; }
+.hero-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; opacity: 0.45; filter: saturate(0.75); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 100%); pointer-events: none; }
 .hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklab, var(--background) 85%, transparent) 0%, transparent 75%); }
 html[dir="rtl"] .hero-bg::after { background: linear-gradient(270deg, color-mix(in oklab, var(--background) 85%, transparent) 0%, transparent 75%); }
 .hero-layout { position: relative; z-index: 1; }
 
-:root { --logo-yellow: oklch(0.84 0.17 88); }
-.logo-yellow { color: var(--logo-yellow); text-shadow: 0 2px 0 oklch(0.25 0.02 60 / 0.85), 0 0 18px oklch(0.25 0.02 60 / 0.25); }
+:root { --logo-yellow: oklch(0.84 0.17 88); --logo-outline: oklch(0 0 0); }
+/* Black outline drawn outside the letters (stroke painted first, fill on top) so the yellow stays full weight */
+.logo-yellow { color: var(--logo-yellow); -webkit-text-stroke: 4px var(--logo-outline); paint-order: stroke fill; stroke-linejoin: round; text-shadow: 0 3px 0 var(--logo-outline), 0 0 18px color-mix(in oklab, var(--logo-outline) 25%, transparent); }
