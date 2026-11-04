@@ -239,7 +239,7 @@ function Index() {
         <Flame className="flame-flicker reveal mx-auto mb-3 text-secondary" size={28} />
         <h2 className={`reveal ${heading}`}>{t.contactTitle}</h2>
         <p className="reveal mt-3 text-lg text-muted-foreground">{t.contactSub}</p>
-        <a href={TEL} className="reveal mt-8 block font-display text-3xl text-secondary sm:text-4xl" dir="ltr">+964 772 800 4848</a>
+        <a href={TEL} className="reveal mt-8 block text-3xl text-secondary sm:text-4xl" dir="ltr">+964 772 800 4848</a>
         <div className="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Button asChild variant="mustard" className="glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
         </div>

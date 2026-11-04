@@ -212,4 +212,4 @@ html[dir="rtl"] .hero-bg::after { background: linear-gradient(270deg, color-mix(
 
 :root { --logo-yellow: oklch(0.84 0.17 88); --logo-outline: oklch(0 0 0); }
 /* Black outline drawn outside the letters (stroke painted first, fill on top) so the yellow stays full weight */
-.logo-yellow { color: var(--logo-yellow); -webkit-text-stroke: 3px color-mix(in oklab, var(--logo-outline) 70%, transparent); paint-order: stroke fill; stroke-linejoin: round; text-shadow: 0 2px 8px color-mix(in oklab, var(--logo-outline) 40%, transparent); }
+.logo-yellow { color: var(--logo-yellow); -webkit-text-stroke: 2px var(--logo-outline); paint-order: stroke fill; stroke-linejoin: round; }
