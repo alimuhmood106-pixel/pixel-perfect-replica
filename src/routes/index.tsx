@@ -141,7 +141,7 @@ function Index() {
           <div className="hero-photo-wrap relative">
             <img src={carving.url} alt="Chef carving shawarma at Malik Al-Sham" className="hero-photo arch-mask h-full w-full border-4 border-primary object-cover shadow-warm" fetchPriority="high" />
             <span className="flame-accent flame-flicker" aria-hidden="true"><Flame strokeWidth={1} fill="currentColor" className="text-primary" /></span>
-            <div className="hero-photo-label flex items-center gap-3 border-2 border-coal bg-primary px-5 py-4 text-primary-foreground shadow-warm"><Flame className="flame-flicker text-secondary" size={24} /><span className="font-display text-lg font-bold">{t.freshLabel}</span></div>
+            <div className="hero-photo-label flex items-center gap-3 bg-card px-5 py-4 shadow-warm"><Flame className="flame-flicker text-secondary" size={24} /><span className="font-display text-lg">{t.freshLabel}</span></div>
           </div>
         </div>
       </section>
@@ -158,7 +158,7 @@ function Index() {
             <article key={i} className="reveal group overflow-hidden rounded-xl border border-border/60 border-t-4 border-t-primary bg-card shadow-warm">
               <div className="aspect-[4/3] overflow-hidden"><img loading="lazy" src={dishImgs[i]?.url} alt={name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" /></div>
               <div className="p-6">
-                <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-xs font-bold text-primary-foreground"><Flame size={12} className="flame-flicker" />{i === 0 ? t.chefFavorite : t.freshLabel}</span>
+                <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-primary/25 px-2.5 py-1 text-xs font-semibold tag-label"><Flame size={12} className="flame-flicker" />{i === 0 ? t.chefFavorite : t.freshLabel}</span>
                 <h3 className="font-display text-2xl text-foreground">{name}</h3>
                 <p className="mt-1 text-muted-foreground">{desc}</p>
               </div>
