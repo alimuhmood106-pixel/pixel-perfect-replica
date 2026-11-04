@@ -4,6 +4,7 @@ import { Phone, Instagram, Facebook, Flame, Bike, Clock, Smile, MapPin, Menu, X,
 import { Button } from "@/components/ui/button";
 import { DICT, LANGS, type Lang } from "@/lib/i18n";
 import logo from "@/assets/logo.jpg.asset.json";
+import heroBg from "@/assets/hero-spit-bg.jpg.asset.json";
 import carving from "@/assets/shawarma-carving.jpg.asset.json";
 import meatCarving from "@/assets/meat-carving.jpg.asset.json";
 import chickenBurger from "@/assets/chicken-burger.jpg.asset.json";
@@ -126,12 +127,11 @@ function Index() {
 
       {/* Hero */}
       <section id="home" className="hero-section grain relative overflow-hidden">
+        <div aria-hidden className="hero-bg" style={{ backgroundImage: `url(${heroBg.url})` }} />
         <div className="hero-layout mx-auto grid max-w-7xl items-center gap-10 px-6 md:grid-cols-2 lg:gap-16">
           <div className="relative z-10 py-4">
-            <div className="mb-6 flex items-center gap-3 text-sm font-semibold text-secondary"><Flame size={16} className="flame-flicker" /><span>{t.heroEyebrow}</span></div>
-            <h1 className="heading-glow font-display text-5xl leading-[1.12] text-foreground lg:text-7xl">{lang === "en" ? "Malik Al-Sham" : "ملك الشام"}</h1>
+            <h1 className="heading-glow font-logo text-5xl leading-[1.2] text-foreground lg:text-7xl">{lang === "en" ? "Malik Al-Sham" : "ملك الشام"}</h1>
             <p className="mt-5 max-w-lg font-display text-2xl leading-relaxed text-secondary">{t.tagline}</p>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">{t.sub}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="mustard" className="glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
               <Button asChild variant="outline" className="border-secondary text-secondary hover:bg-secondary/10 hover:text-secondary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
