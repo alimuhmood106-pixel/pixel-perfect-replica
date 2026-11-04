@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { Phone, Instagram, Facebook, Flame, Bike, Clock, Smile, MapPin, Menu, X, ArrowUpRight, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DICT, LANGS, type Lang } from "@/lib/i18n";
@@ -128,22 +128,30 @@ function Index() {
       {/* Hero */}
       <section id="home" className="hero-section relative overflow-hidden border-b-4 border-primary bg-coal text-coal-foreground">
         <div aria-hidden className="hero-bg" style={{ backgroundImage: `url(${heroBg.url})` }} />
-        <div className="hero-layout mx-auto grid max-w-7xl items-center gap-10 px-6 md:grid-cols-2 lg:gap-16">
-          <div className="relative z-10 py-4">
-            <h1 className="heading-glow">
+        <div className="hero-layout mx-auto flex max-w-5xl flex-col items-center gap-10 px-6 text-center">
+          <div className="hero-photo-wrap relative w-full">
+            <div className="hero-photo-frame h-full w-full overflow-hidden rounded-3xl border-4 border-primary shadow-warm">
+              <img src={carving.url} alt="Chef carving shawarma at Malik Al-Sham" className="hero-photo w-full object-cover" fetchPriority="high" />
+              <div className="hero-fire" aria-hidden="true">
+                {Array.from({ length: 9 }, (_, i) => <span key={i} className="fire-tongue" style={{ "--i": i } as CSSProperties} />)}
+              </div>
+              <div className="hero-embers" aria-hidden="true">
+                {Array.from({ length: 12 }, (_, i) => <span key={i} className="ember" style={{ "--i": i } as CSSProperties} />)}
+              </div>
+            </div>
+            <span className="flame-accent flame-flicker" aria-hidden="true"><Flame strokeWidth={1} fill="currentColor" className="text-primary" /></span>
+            <div className="hero-photo-label flex items-center gap-3 border-2 border-coal bg-primary px-5 py-4 text-primary-foreground shadow-warm"><Flame className="flame-flicker text-secondary" size={24} /><span className="font-display text-lg font-bold">{t.freshLabel}</span></div>
+          </div>
+          <div className="relative z-10 flex flex-col items-center py-2">
+            <h1>
               <img src="/logo-wordmark.png" alt={lang === "en" ? "Malik Al-Sham" : "ملك الشام"} width={1908} height={504} fetchPriority="high" className="block h-auto w-full max-w-sm sm:max-w-md" />
             </h1>
             <p className="mt-5 max-w-lg text-2xl leading-relaxed text-coal-foreground">{t.tagline}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild variant="mustard" className="glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Button asChild variant="mustard"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
               <Button asChild variant="outline" className="border-primary bg-transparent text-primary hover:bg-primary/10 hover:text-primary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
             </div>
             <div className="mt-9 flex items-center gap-2 text-sm text-coal-foreground/70"><Clock size={16} className="text-primary" />{t.hoursVal}</div>
-          </div>
-          <div className="hero-photo-wrap relative">
-            <img src={carving.url} alt="Chef carving shawarma at Malik Al-Sham" className="hero-photo arch-mask h-full w-full border-4 border-primary object-cover shadow-warm" fetchPriority="high" />
-            <span className="flame-accent flame-flicker" aria-hidden="true"><Flame strokeWidth={1} fill="currentColor" className="text-primary" /></span>
-            <div className="hero-photo-label flex items-center gap-3 border-2 border-coal bg-primary px-5 py-4 text-primary-foreground shadow-warm"><Flame className="flame-flicker text-secondary" size={24} /><span className="font-display text-lg font-bold">{t.freshLabel}</span></div>
           </div>
         </div>
       </section>
