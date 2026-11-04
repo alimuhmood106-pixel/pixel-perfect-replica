@@ -131,8 +131,10 @@
 html { scroll-behavior: smooth; scroll-padding-top: 96px; overflow-x: hidden; overflow-x: clip; }
 /* Decorative bleed (heading glows, offset badges) must never create sideways scroll on mobile, in LTR or RTL */
 .page-root { overflow-x: clip; }
-/* Dish tag text: the brick red, mixed toward charcoal so it reads clearly on the pale yellow tag */
-.tag-label { color: color-mix(in oklab, var(--secondary) 60%, var(--foreground)); }
+/* Hero title: one line always. Font size follows the width of its column (cqw), capped at 72px.
+   The first font-size is the fallback for browsers without container query units. */
+.hero-text-col { container-type: inline-size; }
+.hero-title { white-space: nowrap; font-size: 2.5rem; font-size: min(4.5rem, 12cqw); }
 body { font-family: var(--font-sans); letter-spacing: 0; }
 html[dir="rtl"] body { font-family: "Noto Naskh Arabic", serif; }
 html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
