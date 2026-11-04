@@ -208,5 +208,5 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 html[dir="rtl"] .hero-bg::after { background: linear-gradient(270deg, color-mix(in oklab, var(--background) 85%, transparent) 0%, transparent 75%); }
 .hero-layout { position: relative; z-index: 1; }
 
-:root { --logo-yellow: oklch(0.84 0.17 88); }
-.logo-yellow { color: var(--logo-yellow); text-shadow: 0 2px 0 oklch(0.25 0.02 60 / 0.85), 0 0 18px oklch(0.25 0.02 60 / 0.25); }
+:root { --logo-yellow: oklch(0.84 0.17 88); --logo-outline: oklch(0 0 0); }
+.logo-yellow { color: var(--logo-yellow); text-shadow: 0 2px 0 var(--logo-outline), 0 0 18px color-mix(in oklab, var(--logo-outline) 25%, transparent); }
