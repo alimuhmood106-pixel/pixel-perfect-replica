@@ -48,7 +48,9 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// Raw HTML so the muted/autoplay/playsinline attributes are in the server-rendered markup (React drops `muted` there, and iOS then blocks autoplay).
+// The hero background is inserted on the client as raw HTML: a looping video on desktop (muted/autoplay attributes
+// must be real attributes or iOS blocks autoplay) and an animated image on phones, which iOS never pauses like it does video.
+const HERO_IMAGE_HTML = '<img src="/hero-loop.webp" alt="" decoding="async" fetchpriority="high">';
 const HERO_VIDEO_HTML = '<video autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" x-webkit-airplay="deny" tabindex="-1" poster="/hero-poster.jpg"><source src="/hero-loop.mp4" type="video/mp4"></video>';
 
 const dishImgs = [wrap, chicken, burger, pasta, plate];
@@ -67,8 +69,14 @@ function Index() {
 
   useEffect(() => {
     const wrap = heroVideoWrap.current;
-    const v = wrap?.querySelector("video");
-    if (!wrap || !v) return;
+    if (!wrap) return;
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+      wrap.innerHTML = HERO_IMAGE_HTML;
+      return () => { wrap.innerHTML = ""; };
+    }
+    wrap.innerHTML = HERO_VIDEO_HTML;
+    const v = wrap.querySelector("video");
+    if (!v) return;
     v.muted = true;
     v.defaultMuted = true;
     // Keep the background video running: restart it whenever the browser pauses or stalls it.
@@ -101,6 +109,7 @@ function Index() {
       io.disconnect();
       window.clearInterval(timer);
       window.clearTimeout(check);
+      wrap.innerHTML = "";
     };
   }, []);
   useEffect(() => {
@@ -176,7 +185,7 @@ function Index() {
 
       {/* Hero */}
       <section id="home" className="hero-section relative isolate flex min-h-svh flex-col overflow-hidden text-coal-foreground">
-        <div ref={heroVideoWrap} aria-hidden className="hero-video" dangerouslySetInnerHTML={{ __html: HERO_VIDEO_HTML }} />
+        <div ref={heroVideoWrap} aria-hidden className="hero-video" />
         {videoFailed && <div aria-hidden className="hero-video-fallback"><img src="/hero-loop.webp" alt="" decoding="async" /></div>}
         <div aria-hidden className="hero-scrim" />
         <div className="hero-content relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 text-center">
