@@ -95,7 +95,7 @@ function Index() {
     <div className="page-root relative isolate min-h-screen bg-background text-foreground">
       <div aria-hidden className="wrapper-pattern" />
       {/* Navbar */}
-      <header className="fixed inset-x-0 top-0 z-40 bg-coal text-coal-foreground">
+      <header className="fixed inset-x-0 top-0 z-40 border-b-2 border-primary bg-coal text-coal-foreground">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4">
           <a href="#home" className="flex shrink-0 items-center gap-3">
             <span className="grid h-12 w-12 place-items-center overflow-hidden rounded-xl bg-foreground ring-1 ring-primary/60">
@@ -155,7 +155,7 @@ function Index() {
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {t.dishes.map(([name, desc], i) => (
-            <article key={i} className="reveal group overflow-hidden rounded-xl border border-border/60 bg-card shadow-warm">
+            <article key={i} className="reveal group overflow-hidden rounded-xl border border-border/60 border-t-4 border-t-primary bg-card shadow-warm">
               <div className="aspect-[4/3] overflow-hidden"><img loading="lazy" src={dishImgs[i]?.url} alt={name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" /></div>
               <div className="p-6">
                 <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-primary/25 px-2.5 py-1 text-xs font-semibold text-secondary"><Flame size={12} className="flame-flicker" />{i === 0 ? t.chefFavorite : t.freshLabel}</span>
@@ -192,7 +192,7 @@ function Index() {
         <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
           {t.why.map((w, i) => { const I = whyIcons[i] ?? Flame; return (
             <div key={i} className="reveal rounded-xl border border-wood/30 bg-card p-6 text-center shadow-warm">
-              <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary/25 text-secondary"><I /></div>
+              <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary/60 text-secondary"><I /></div>
               <p className="mt-4 font-bold">{w}</p>
             </div>); })}
         </div>
@@ -247,7 +247,7 @@ function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-coal px-4 pb-28 pt-12 text-coal-foreground sm:pb-12">
+      <footer className="border-t-4 border-primary bg-coal px-4 pb-28 pt-12 text-coal-foreground sm:pb-12">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 text-center">
           <span className="grid h-20 w-20 place-items-center overflow-hidden rounded-xl bg-foreground ring-1 ring-primary/60">
             <img src={logo.url} alt="Malik Al-Sham logo" className="h-full w-full object-cover" loading="lazy" />
@@ -270,9 +270,9 @@ function Index() {
 function FlameDivider() {
   return (
     <div className="flex items-center justify-center gap-4" aria-hidden="true">
-      <span className="h-px w-16 bg-wood/50" />
+      <span className="h-0.5 w-16 rounded-full bg-primary" />
       <Flame size={20} className="flame-flicker text-primary" fill="currentColor" />
-      <span className="h-px w-16 bg-wood/50" />
+      <span className="h-0.5 w-16 rounded-full bg-primary" />
     </div>
   );
 }
