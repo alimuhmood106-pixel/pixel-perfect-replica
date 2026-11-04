@@ -126,20 +126,20 @@ function Index() {
       </header>
 
       {/* Hero */}
-      <section id="home" className="hero-section grain relative overflow-hidden">
+      <section id="home" className="hero-section relative overflow-hidden border-b-4 border-primary bg-coal text-coal-foreground">
         <div aria-hidden className="hero-bg" style={{ backgroundImage: `url(${heroBg.url})` }} />
         <div className="hero-layout mx-auto grid max-w-7xl items-center gap-10 px-6 md:grid-cols-2 lg:gap-16">
           <div className="relative z-10 py-4">
             <h1 className="heading-glow font-logo logo-yellow text-5xl leading-[1.2] lg:text-7xl">{lang === "en" ? "Malik Al-Sham" : "ملك الشام"}</h1>
-            <p className="mt-5 max-w-lg text-2xl leading-relaxed text-foreground">{t.tagline}</p>
+            <p className="mt-5 max-w-lg text-2xl leading-relaxed text-coal-foreground">{t.tagline}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="mustard" className="glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
-              <Button asChild variant="outline" className="border-secondary text-secondary hover:bg-secondary/10 hover:text-secondary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
+              <Button asChild variant="outline" className="border-primary bg-transparent text-primary hover:bg-primary/10 hover:text-primary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
             </div>
-            <div className="mt-9 flex items-center gap-2 text-sm text-muted-foreground"><Clock size={16} className="text-wood" />{t.hoursVal}</div>
+            <div className="mt-9 flex items-center gap-2 text-sm text-coal-foreground/70"><Clock size={16} className="text-primary" />{t.hoursVal}</div>
           </div>
           <div className="hero-photo-wrap relative">
-            <img src={carving.url} alt="Chef carving shawarma at Malik Al-Sham" className="hero-photo arch-mask h-full w-full object-cover shadow-warm" fetchPriority="high" />
+            <img src={carving.url} alt="Chef carving shawarma at Malik Al-Sham" className="hero-photo arch-mask h-full w-full border-4 border-primary object-cover shadow-warm" fetchPriority="high" />
             <span className="flame-accent flame-flicker" aria-hidden="true"><Flame strokeWidth={1} fill="currentColor" className="text-primary" /></span>
             <div className="hero-photo-label flex items-center gap-3 bg-card px-5 py-4 shadow-warm"><Flame className="flame-flicker text-secondary" size={24} /><span className="font-display text-lg">{t.freshLabel}</span></div>
           </div>
