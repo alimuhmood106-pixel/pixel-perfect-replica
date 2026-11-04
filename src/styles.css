@@ -130,12 +130,7 @@
 
 html { scroll-behavior: smooth; scroll-padding-top: 96px; overflow-x: hidden; overflow-x: clip; }
 /* Decorative bleed (heading glows, offset badges) must never create sideways scroll on mobile, in LTR or RTL */
-.page-root { overflow-x: clip; }
-/* Hero title: one line always. Font size follows the width of its column (cqw), capped at 72px.
-   The first font-size is the fallback for browsers without container query units. */
-.hero-text-col { container-type: inline-size; }
-.hero-title { white-space: nowrap; font-size: 2.5rem; font-size: min(4.5rem, 12cqw); }
-body { font-family: var(--font-sans); letter-spacing: 0; }
+.page-root { overflow-x: clip; }body { font-family: var(--font-sans); letter-spacing: 0; }
 html[dir="rtl"] body { font-family: "Noto Naskh Arabic", serif; }
 html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 @utility shadow-warm { box-shadow: var(--shadow-warm); }
@@ -208,12 +203,8 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 }
 @media (max-width: 640px) { .wrapper-pattern { background-size: 210px; opacity: 0.08; } }
 
-.font-logo, html[dir="rtl"] .font-logo { font-family: var(--font-display); font-weight: 600; letter-spacing: 0; }
 .hero-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; opacity: 0.45; filter: saturate(0.75); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 100%); pointer-events: none; }
 .hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in oklab, var(--coal) 85%, transparent) 0%, transparent 75%); }
 html[dir="rtl"] .hero-bg::after { background: linear-gradient(270deg, color-mix(in oklab, var(--coal) 85%, transparent) 0%, transparent 75%); }
 .hero-layout { position: relative; z-index: 1; }
 
-:root { --logo-yellow: oklch(0.84 0.17 88); --logo-outline: oklch(0 0 0); }
-/* Black outline drawn outside the letters (stroke painted first, fill on top) so the yellow stays full weight */
-.logo-yellow { color: var(--logo-yellow); -webkit-text-stroke: 2px var(--logo-outline); paint-order: stroke fill; stroke-linejoin: round; }

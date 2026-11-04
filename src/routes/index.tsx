@@ -129,8 +129,10 @@ function Index() {
       <section id="home" className="hero-section relative overflow-hidden border-b-4 border-primary bg-coal text-coal-foreground">
         <div aria-hidden className="hero-bg" style={{ backgroundImage: `url(${heroBg.url})` }} />
         <div className="hero-layout mx-auto grid max-w-7xl items-center gap-10 px-6 md:grid-cols-2 lg:gap-16">
-          <div className="hero-text-col relative z-10 py-4">
-            <h1 className="hero-title heading-glow font-logo logo-yellow leading-[1.2]">{lang === "en" ? "Malik Al-Sham" : "ملك الشام"}</h1>
+          <div className="relative z-10 py-4">
+            <h1 className="heading-glow">
+              <img src="/logo-wordmark.png" alt={lang === "en" ? "Malik Al-Sham" : "ملك الشام"} width={1908} height={504} fetchPriority="high" className="block h-auto w-full max-w-sm sm:max-w-md" />
+            </h1>
             <p className="mt-5 max-w-lg text-2xl leading-relaxed text-coal-foreground">{t.tagline}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="mustard" className="glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
@@ -166,8 +168,6 @@ function Index() {
           ))}
         </div>
       </section>
-
-      <FlameDivider />
 
       {/* About */}
       <section id="about" className="grain bg-muted/85 py-24">
