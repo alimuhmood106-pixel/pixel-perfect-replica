@@ -173,13 +173,14 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 
 /* Hero: low-key looping video behind a warm charcoal scrim that fades into the page background */
 .hero-section { padding-top: 80px; background-size: cover; background-position: center; }
-.hero-video { position: absolute; inset: 0; z-index: -2; pointer-events: none; }
+.hero-video, .hero-scrim { -webkit-mask-image: var(--hero-fade); mask-image: var(--hero-fade); }
+.hero-section { --hero-fade: linear-gradient(to bottom, #000 0%, #000 66%, rgb(0 0 0 / 0.92) 71%, rgb(0 0 0 / 0.78) 76%, rgb(0 0 0 / 0.6) 81%, rgb(0 0 0 / 0.42) 86%, rgb(0 0 0 / 0.25) 91%, rgb(0 0 0 / 0.1) 96%, transparent 100%); }
+.hero-video { position: absolute; inset: 0; z-index: -2; pointer-events: none; background: var(--coal); }
 .hero-video video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; filter: saturate(0.7) contrast(1.05); }
 .hero-video video::-webkit-media-controls,
 .hero-video video::-webkit-media-controls-start-playback-button,
 .hero-video video::-webkit-media-controls-overlay-play-button { display: none !important; -webkit-appearance: none; }
 .hero-scrim { position: absolute; inset: 0; z-index: -1; pointer-events: none; background:
-  linear-gradient(to bottom, transparent 72%, color-mix(in oklab, var(--background) 8%, transparent) 77%, color-mix(in oklab, var(--background) 22%, transparent) 83%, color-mix(in oklab, var(--background) 45%, transparent) 89%, color-mix(in oklab, var(--background) 72%, transparent) 94%, color-mix(in oklab, var(--background) 92%, transparent) 98%, var(--background) 100%),
   radial-gradient(ellipse at 50% 45%, color-mix(in oklab, var(--coal) 58%, transparent) 0%, color-mix(in oklab, var(--coal) 82%, transparent) 100%),
   linear-gradient(to bottom, color-mix(in oklab, var(--coal) 62%, transparent) 0%, color-mix(in oklab, var(--coal) 30%, transparent) 10%, transparent 24%); }
 .hero-content { padding-top: 40px; padding-bottom: 96px; }
@@ -189,8 +190,8 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal, .flame-flicker { animation: none; opacity: 1; transform: none; transition: none; }
-  .hero-video { display: none; }
-  .hero-section { background-image: url("/hero-poster.jpg"); }
+  .hero-video video { display: none; }
+  .hero-video { background: var(--coal) url("/hero-poster.jpg") center / cover; }
 }
 
 /* Faint wrapper-paper watermark behind cream/sand sections */
