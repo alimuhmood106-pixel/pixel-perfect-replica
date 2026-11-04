@@ -92,7 +92,7 @@ function Index() {
   const heading = "heading-glow font-display text-4xl sm:text-5xl text-foreground";
 
   return (
-    <div className="relative isolate min-h-screen bg-background text-foreground">
+    <div className="page-root relative isolate min-h-screen bg-background text-foreground">
       <div aria-hidden className="wrapper-pattern" />
       {/* Navbar */}
       <header className="fixed inset-x-0 top-0 z-40 bg-coal text-coal-foreground">
