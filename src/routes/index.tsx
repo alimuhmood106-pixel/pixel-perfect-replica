@@ -49,7 +49,7 @@ export const Route = createFileRoute("/")({
 });
 
 // Raw HTML so the muted/autoplay/playsinline attributes are in the server-rendered markup (React drops `muted` there, and iOS then blocks autoplay).
-const HERO_VIDEO_HTML = '<video autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1" poster="/hero-poster.jpg"><source src="/hero-loop.mp4" type="video/mp4"></video>';
+const HERO_VIDEO_HTML = '<video autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" x-webkit-airplay="deny" tabindex="-1" poster="/hero-poster.jpg"><source src="/hero-loop.mp4" type="video/mp4"></video>';
 
 const dishImgs = [wrap, chicken, burger, pasta, plate];
 const gallery = [carving, meatCarving, wrap, chicken, burger, chickenBurger, pasta, plate, cheesyBake, team, interior];
@@ -60,23 +60,48 @@ function Index() {
   const [open, setOpen] = useState(false);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
   const heroVideoWrap = useRef<HTMLDivElement>(null);
   const t = DICT[lang];
   const rtl = lang !== "en";
 
   useEffect(() => {
-    const v = heroVideoWrap.current?.querySelector("video");
-    if (!v) return;
+    const wrap = heroVideoWrap.current;
+    const v = wrap?.querySelector("video");
+    if (!wrap || !v) return;
     v.muted = true;
-    const tryPlay = () => v.play().then(() => true, () => false);
-    // Some phones (Low Power Mode, in-app browsers) refuse autoplay: retry on the first touch, click or scroll.
-    const events = ["touchstart", "pointerdown", "click", "keydown", "scroll"] as const;
-    const stop = () => events.forEach((e) => window.removeEventListener(e, onGesture));
-    const onGesture = () => { tryPlay().then((ok) => ok && stop()); };
-    tryPlay().then((ok) => { if (!ok) events.forEach((e) => window.addEventListener(e, onGesture, { passive: true })); });
-    const onVisible = () => { if (!document.hidden && v.paused) tryPlay(); };
-    document.addEventListener("visibilitychange", onVisible);
-    return () => { stop(); document.removeEventListener("visibilitychange", onVisible); };
+    v.defaultMuted = true;
+    // Keep the background video running: restart it whenever the browser pauses or stalls it.
+    const play = () => { if (v.paused && !document.hidden) v.play().catch(() => {}); };
+    const videoEvents = ["pause", "suspend", "stalled", "waiting", "emptied", "ended", "loadeddata", "canplay"] as const;
+    videoEvents.forEach((e) => v.addEventListener(e, play));
+    // iOS only counts touchend/click as a gesture (not touchstart or scroll), so retry on those too.
+    const windowEvents = ["touchend", "pointerup", "click", "keydown", "scroll", "focus", "pageshow", "resize", "orientationchange"] as const;
+    windowEvents.forEach((e) => window.addEventListener(e, play, { passive: true }));
+    document.addEventListener("visibilitychange", play);
+    const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && play()));
+    io.observe(wrap);
+    const timer = window.setInterval(play, 700);
+    // Backup: if the video never starts (or the file fails), show an animated image instead.
+    const onPlaying = () => setVideoFailed(false);
+    const onError = () => setVideoFailed(true);
+    v.addEventListener("playing", onPlaying);
+    v.addEventListener("error", onError);
+    const source = v.querySelector("source");
+    source?.addEventListener("error", onError);
+    const check = window.setTimeout(() => { if (v.paused || v.currentTime === 0) setVideoFailed(true); }, 2500);
+    play();
+    return () => {
+      videoEvents.forEach((e) => v.removeEventListener(e, play));
+      windowEvents.forEach((e) => window.removeEventListener(e, play));
+      document.removeEventListener("visibilitychange", play);
+      v.removeEventListener("playing", onPlaying);
+      v.removeEventListener("error", onError);
+      source?.removeEventListener("error", onError);
+      io.disconnect();
+      window.clearInterval(timer);
+      window.clearTimeout(check);
+    };
   }, []);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -152,6 +177,7 @@ function Index() {
       {/* Hero */}
       <section id="home" className="hero-section relative isolate flex min-h-svh flex-col overflow-hidden text-coal-foreground">
         <div ref={heroVideoWrap} aria-hidden className="hero-video" dangerouslySetInnerHTML={{ __html: HERO_VIDEO_HTML }} />
+        {videoFailed && <div aria-hidden className="hero-video-fallback"><img src="/hero-loop.webp" alt="" decoding="async" /></div>}
         <div aria-hidden className="hero-scrim" />
         <div className="hero-content relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 text-center">
           <span className="hero-pill inline-flex items-center gap-2 rounded-full border border-primary/60 bg-coal/50 px-4 py-1.5 text-sm text-coal-foreground/90 backdrop-blur-sm"><Clock size={15} className="text-primary" />{t.hoursVal}</span>
