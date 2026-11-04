@@ -202,7 +202,6 @@ function Index() {
 
       {/* Gallery */}
       <section id="gallery" className="mx-auto max-w-7xl px-4 pb-20">
-        <Flame className="flame-flicker reveal mx-auto mb-3 text-secondary" size={28} />
         <h2 className={`reveal text-center ${heading}`}>{t.galleryTitle}</h2>
         <div className="mt-10 columns-2 gap-3 md:columns-3">
           {gallery.map((g, i) => (
