@@ -130,8 +130,8 @@ function Index() {
         <div aria-hidden className="hero-bg" style={{ backgroundImage: `url(${heroBg.url})` }} />
         <div className="hero-layout mx-auto grid max-w-7xl items-center gap-10 px-6 md:grid-cols-2 lg:gap-16">
           <div className="relative z-10 py-4">
-            <h1 className="heading-glow font-logo text-5xl leading-[1.2] text-foreground lg:text-7xl">{lang === "en" ? "Malik Al-Sham" : "ملك الشام"}</h1>
-            <p className="mt-5 max-w-lg font-display text-2xl leading-relaxed text-secondary">{t.tagline}</p>
+            <h1 className="heading-glow font-logo logo-yellow text-5xl leading-[1.2] lg:text-7xl">{lang === "en" ? "Malik Al-Sham" : "ملك الشام"}</h1>
+            <p className="mt-5 max-w-lg font-display text-2xl leading-relaxed text-foreground">{t.tagline}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="mustard" className="glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
               <Button asChild variant="outline" className="border-secondary text-secondary hover:bg-secondary/10 hover:text-secondary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
