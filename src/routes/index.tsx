@@ -59,20 +59,10 @@ const dishImgs = [wrap, chicken, burger, pasta, plate];
 const gallery = [carving, meatCarving, wrap, chicken, burger, chickenBurger, pasta, plate, cheesyBake, team, interior];
 const whyIcons = [Flame, Bike, Clock, Smile];
 
-function Index() {
-  const [lang, setLang] = useState<Lang>("en");
-  const [open, setOpen] = useState(false);
-  const [lightbox, setLightbox] = useState<string | null>(null);
-  const [scrolled, setScrolled] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const [isOpen, setIsOpen] = useState<boolean | null>(null);
-  const heroVideoWrap = useRef<HTMLDivElement>(null);
-  const t = DICT[lang];
-  const rtl = lang !== "en";
+const HERO_SRC = { image: HERO_IMAGE_HTML, frames: "/hero-frames.bin", video: HERO_VIDEO_HTML };
+const CONTACT_SRC = { image: '<img src="/contact-poster.jpg" alt="" decoding="async">', frames: "/contact-frames.bin", video: HERO_VIDEO_HTML.replaceAll("hero-poster", "contact-poster").replace("hero-loop.mp4", "contact-loop.mp4").replace('preload="auto"', 'preload="metadata"') };
 
-  useEffect(() => {
-    const wrap = heroVideoWrap.current;
-    if (!wrap) return;
+function mountLoop(wrap: HTMLDivElement, src: { image: string; frames: string; video: string }, setFailed: (f: boolean) => void): (() => void) | undefined {
     if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
       // Phones: play pre-cut frames on a canvas. Animated WebP/GIF decode on the main thread and slow to ~5fps,
       // so decode a few frames ahead off-thread (createImageBitmap) and draw each frame on a fixed 24fps clock.
@@ -83,7 +73,7 @@ function Index() {
       const pending = new Set<number>();
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d", { alpha: false });
-      const showImage = () => { if (!dead) wrap.innerHTML = HERO_IMAGE_HTML; };
+      const showImage = () => { if (!dead) wrap.innerHTML = src.image; };
       const decode = (i: number) => {
         if (bitmaps.has(i) || pending.has(i)) return;
         pending.add(i);
@@ -96,7 +86,7 @@ function Index() {
       const start = async () => {
         try {
           if (!ctx || !("createImageBitmap" in window)) throw new Error("no canvas");
-          const buf = await (await fetch("/hero-frames.bin")).arrayBuffer();
+          const buf = await (await fetch(src.frames)).arrayBuffer();
           if (dead) return;
           const dv = new DataView(buf);
           n = dv.getUint32(0, true);
@@ -139,7 +129,7 @@ function Index() {
         wrap.innerHTML = "";
       };
     }
-    wrap.innerHTML = HERO_VIDEO_HTML;
+    wrap.innerHTML = src.video;
     const v = wrap.querySelector("video");
     if (!v) return;
     v.muted = true;
@@ -156,13 +146,13 @@ function Index() {
     io.observe(wrap);
     const timer = window.setInterval(play, 700);
     // Backup: if the video never starts (or the file fails), show an animated image instead.
-    const onPlaying = () => setVideoFailed(false);
-    const onError = () => setVideoFailed(true);
+    const onPlaying = () => setFailed(false);
+    const onError = () => setFailed(true);
     v.addEventListener("playing", onPlaying);
     v.addEventListener("error", onError);
     const source = v.querySelector("source");
     source?.addEventListener("error", onError);
-    const check = window.setTimeout(() => { if (v.paused || v.currentTime === 0) setVideoFailed(true); }, 2500);
+    const check = window.setTimeout(() => { if (v.paused || v.currentTime === 0) setFailed(true); }, 2500);
     play();
     return () => {
       videoEvents.forEach((e) => v.removeEventListener(e, play));
@@ -176,7 +166,23 @@ function Index() {
       window.clearTimeout(check);
       wrap.innerHTML = "";
     };
-  }, []);
+}
+
+function Index() {
+  const [lang, setLang] = useState<Lang>("en");
+  const [open, setOpen] = useState(false);
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean | null>(null);
+  const heroVideoWrap = useRef<HTMLDivElement>(null);
+  const contactVideoWrap = useRef<HTMLDivElement>(null);
+  const [contactFailed, setContactFailed] = useState(false);
+  const t = DICT[lang];
+  const rtl = lang !== "en";
+
+  useEffect(() => { const w = heroVideoWrap.current; return w ? mountLoop(w, HERO_SRC, setVideoFailed) : undefined; }, []);
+  useEffect(() => { const w = contactVideoWrap.current; return w ? mountLoop(w, CONTACT_SRC, setContactFailed) : undefined; }, []);
   useEffect(() => {
     // Open daily 9 AM - 3 AM, Sulaymaniyah time (computed client-side so it is never stale in the server HTML)
     const check = () => {
@@ -364,8 +370,11 @@ function Index() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="mx-auto max-w-5xl px-4 py-20">
-        <div className="reveal relative isolate grid overflow-hidden rounded-3xl border-t-8 border-t-primary bg-coal text-coal-foreground shadow-warm md:grid-cols-[1.15fr_1fr]">
+      <section id="contact" className="contact-section relative isolate overflow-hidden px-4 py-28 text-coal-foreground">
+        <div ref={contactVideoWrap} aria-hidden className="hero-video contact-video" />
+        {contactFailed && <div aria-hidden className="hero-video-fallback contact-video"><img src="/contact-poster.jpg" alt="" decoding="async" /></div>}
+        <div aria-hidden className="hero-scrim contact-scrim" />
+        <div className="reveal relative isolate mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-coal-foreground/15 border-t-8 border-t-primary bg-coal/55 text-coal-foreground shadow-warm backdrop-blur-sm md:grid-cols-[1.15fr_1fr]">
           <Flame aria-hidden strokeWidth={1} className="pointer-events-none absolute -bottom-16 -end-10 -z-10 h-80 w-80 text-primary/[0.07]" />
           <div className="flex flex-col items-start gap-6 p-8 sm:p-12">
             {isOpen !== null && (
