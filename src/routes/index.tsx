@@ -359,7 +359,7 @@ function Index() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="contact-section relative isolate overflow-hidden px-4 py-28 text-coal-foreground">
+      <section id="contact" className="contact-section relative isolate flex min-h-[70svh] items-center justify-center overflow-hidden px-4 py-28 text-coal-foreground">
         <div ref={contactVideoWrap} aria-hidden className="hero-video contact-video" />
         {contactFailed && <div aria-hidden className="hero-video-fallback contact-video"><img src="/contact-poster.jpg" alt="" decoding="async" /></div>}
         <div aria-hidden className="hero-scrim contact-scrim" />
