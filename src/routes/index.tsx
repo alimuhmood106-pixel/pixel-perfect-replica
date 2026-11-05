@@ -77,7 +77,7 @@ function mountLoop(wrap: HTMLDivElement, src: { image: string; frames: string; v
       const decode = (i: number) => {
         if (bitmaps.has(i) || pending.has(i)) return;
         pending.add(i);
-        createImageBitmap(frames[i]).then((bm) => {
+        createImageBitmap(frames[i]!).then((bm) => {
           pending.delete(i);
           if (dead) { bm.close(); return; }
           bitmaps.set(i, bm);
@@ -93,7 +93,7 @@ function mountLoop(wrap: HTMLDivElement, src: { image: string; frames: string; v
           let off = 4 + n * 4;
           for (let i = 0; i < n; i++) { const len = dv.getUint32(4 + i * 4, true); frames.push(new Blob([new Uint8Array(buf, off, len)], { type: "image/webp" })); off += len; }
           for (let i = 0; i < AHEAD; i++) decode(i);
-          const first = await createImageBitmap(frames[0]);
+          const first = await createImageBitmap(frames[0]!);
           if (dead) { first.close(); return; }
           canvas.width = first.width; canvas.height = first.height;
           bitmaps.set(0, first);
