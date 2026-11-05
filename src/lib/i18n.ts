@@ -37,9 +37,7 @@ const en = {
   hoursVal: "Every day, 9:00 AM – 3:00 AM",
   directions: "Get Directions",
   contactTitle: "Order & Contact",
-  contactSub: "Hungry? Call us — we deliver across Sulaymaniyah.",
   phone: "Phone",
-  delivery: "Delivery available daily until 3 AM. Pickup and dine-in welcome.",
   follow: "Follow us",
   rights: "All rights reserved.",
 };
@@ -77,9 +75,7 @@ const ar: Dict = {
   hoursVal: "يومياً، ٩:٠٠ صباحاً – ٣:٠٠ فجراً",
   directions: "الاتجاهات",
   contactTitle: "اطلب وتواصل",
-  contactSub: "جوعان؟ اتصل بنا — نوصل لكل أنحاء السليمانية.",
   phone: "الهاتف",
-  delivery: "التوصيل متوفر يومياً حتى ٣ فجراً. أهلاً بكم للاستلام أو الجلوس.",
   follow: "تابعونا",
   rights: "جميع الحقوق محفوظة.",
 };
@@ -115,9 +111,7 @@ const ku: Dict = {
   hoursVal: "هەموو ڕۆژێک، ٩:٠٠ی بەیانی – ٣:٠٠ی بەیانی",
   directions: "ڕێنمایی ڕێگا",
   contactTitle: "داواکردن و پەیوەندی",
-  contactSub: "برسیتە؟ پەیوەندیمان پێوە بکە — بۆ هەموو سلێمانی دەگەیەنین.",
   phone: "تەلەفۆن",
-  delivery: "گەیاندن ڕۆژانە تا ٣ی بەیانی. بەخێربێن بۆ وەرگرتن و دانیشتن.",
   follow: "فۆڵۆمان بکەن",
   rights: "هەموو مافەکان پارێزراون.",
 };

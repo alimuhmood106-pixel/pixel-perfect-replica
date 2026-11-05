@@ -19,7 +19,8 @@ import interior from "@/assets/interior.jpg.asset.json";
 const TEL = "tel:+9647728004848";
 const IG = "https://instagram.com/malik_al_sham";
 const FB = "https://www.facebook.com/malikalshamSuly";
-const MAP_Q = encodeURIComponent("HC53+M3P Sulaymaniyah");
+// Exact coordinates of Plus Code HC53+M3P (Malik Al-Sham), so the map pin doesn't depend on a fuzzy text search.
+const MAP_Q = "35.559187,45.402687";
 
 const schema = {
   "@context": "https://schema.org",
@@ -344,7 +345,7 @@ function Index() {
             <div className="flex gap-3"><Clock className="shrink-0 text-secondary" /><div><p className="font-bold">{t.hours}</p><p className="text-muted-foreground">{t.hoursVal}</p></div></div>
             <Button asChild><a href={`https://www.google.com/maps/dir/?api=1&destination=${MAP_Q}`} target="_blank" rel="noopener noreferrer"><MapPin size={18} />{t.directions}<ArrowUpRight size={16} /></a></Button>
           </div>
-          <iframe title="Map" loading="lazy" src={`https://maps.google.com/maps?q=${MAP_Q}&z=16&output=embed`} className="reveal h-80 w-full rounded-2xl border-0 shadow-warm" />
+          <iframe title="Map" loading="lazy" src={`https://maps.google.com/maps?q=${MAP_Q}&z=17&output=embed`} className="reveal h-80 w-full rounded-2xl border-0 shadow-warm" />
         </div>
       </section>
 
@@ -353,14 +354,12 @@ function Index() {
         <div className="reveal relative isolate overflow-hidden rounded-3xl border border-border/60 border-t-8 border-t-primary bg-card px-6 py-12 text-center shadow-warm sm:px-12">
           <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-full bg-primary/60 text-secondary"><Phone size={28} /></div>
           <h2 className="inline-block max-w-full rounded-2xl border-2 border-primary px-5 py-2 font-display text-3xl text-foreground sm:px-8 sm:text-5xl">{t.contactTitle}</h2>
-          <p className="mx-auto mt-3 max-w-md text-lg text-muted-foreground">{t.contactSub}</p>
           <a href={TEL} dir="ltr" className="mt-8 inline-block rounded-2xl border-2 border-primary bg-primary/15 px-4 py-4 text-2xl font-bold text-secondary transition-colors hover:bg-primary/35 sm:px-8 sm:text-4xl">+964 772 800 4848</a>
           <div className="mt-6 flex justify-center">
             <Button asChild variant="mustard" size="lg" className="glow-warm w-full sm:w-auto"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
           </div>
-          <div className="mt-10 grid gap-3 border-t border-border/60 pt-6 text-sm text-muted-foreground sm:grid-cols-2">
+          <div className="mt-10 border-t border-border/60 pt-6 text-sm text-muted-foreground">
             <div className="flex items-center justify-center gap-2"><Clock size={16} className="shrink-0 text-secondary" />{t.hoursVal}</div>
-            <div className="flex items-center justify-center gap-2"><MapPin size={16} className="shrink-0 text-secondary" />{t.delivery}</div>
           </div>
           <div className="mt-6 flex justify-center gap-4"><Social /></div>
         </div>
