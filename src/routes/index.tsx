@@ -374,39 +374,11 @@ function Index() {
         <div ref={contactVideoWrap} aria-hidden className="hero-video contact-video" />
         {contactFailed && <div aria-hidden className="hero-video-fallback contact-video"><img src="/contact-poster.jpg" alt="" decoding="async" /></div>}
         <div aria-hidden className="hero-scrim contact-scrim" />
-        <div className="reveal relative isolate mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-coal-foreground/15 border-t-8 border-t-primary bg-coal/55 text-coal-foreground shadow-warm backdrop-blur-sm md:grid-cols-[1.15fr_1fr]">
-          <Flame aria-hidden strokeWidth={1} className="pointer-events-none absolute -bottom-16 -end-10 -z-10 h-80 w-80 text-primary/[0.07]" />
-          <div className="flex flex-col items-start gap-6 p-8 sm:p-12">
-            {isOpen !== null && (
-              <span className="inline-flex items-center gap-2.5 rounded-full border border-coal-foreground/20 bg-coal-foreground/5 py-1.5 pe-4 ps-3 text-sm">
-                <span className="relative flex h-2.5 w-2.5">
-                  {isOpen && <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70 motion-safe:animate-ping" />}
-                  <span className={`relative inline-flex h-2.5 w-2.5 rounded-full ${isOpen ? "bg-emerald-400" : "bg-red-400"}`} />
-                </span>
-                {isOpen ? t.openNow : t.closedNow}
-              </span>
-            )}
-            <h2 className="heading-line font-display text-4xl text-coal-foreground sm:text-5xl">{t.contactTitle}</h2>
-            <div className="flex items-center gap-2 text-coal-foreground/70"><Clock size={16} className="shrink-0 text-primary" />{t.hoursVal}</div>
-            <a href={TEL} dir="ltr" className="font-display text-3xl font-bold tracking-tight text-primary transition-colors hover:text-coal-foreground sm:text-5xl">+964 772 800 4848</a>
-            <Button asChild variant="mustard" size="lg" className="glow-warm w-full sm:w-auto"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
-          </div>
-          <div className="flex flex-col justify-center gap-3 border-t border-coal-foreground/10 bg-coal-foreground/[0.04] p-6 sm:p-10 md:border-s md:border-t-0">
-            {[
-              { href: `https://www.google.com/maps/dir/?api=1&destination=${MAP_Q}`, Icon: MapPin, label: t.directions, sub: "HC53+R66" },
-              { href: IG, Icon: Instagram, label: "Instagram", sub: "@malik_al_sham" },
-              { href: FB, Icon: Facebook, label: "Facebook", sub: "malikalshamSuly" },
-            ].map(({ href, Icon, label, sub }) => (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 rounded-2xl border border-coal-foreground/15 px-4 py-3.5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/60 hover:bg-coal-foreground/10">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-primary/15 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground"><Icon size={20} /></span>
-                <span className="min-w-0 flex-1">
-                  <span className="block font-semibold">{label}</span>
-                  <span className="block truncate text-sm text-coal-foreground/60" dir="ltr">{sub}</span>
-                </span>
-                <ArrowUpRight size={18} className="shrink-0 opacity-50 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 rtl:group-hover:-translate-x-0.5" />
-              </a>
-            ))}
-          </div>
+        <div className="reveal relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-7 px-6 text-center">
+          <h2 className="heading-line font-display text-4xl text-coal-foreground sm:text-5xl">{t.contactTitle}</h2>
+          <p style={delay(0.2)} className="hero-in inline-flex items-center gap-2 rounded-full border border-primary/60 bg-coal/50 px-4 py-1.5 text-sm text-coal-foreground/90 backdrop-blur-sm"><Clock size={15} className="text-primary" /><span dir="ltr">{t.hoursVal}</span></p>
+          <a href={TEL} dir="ltr" style={delay(0.35)} className="hero-in font-display text-3xl font-bold leading-snug text-coal-foreground transition-colors hover:text-primary sm:text-4xl">+964 772 800 4848</a>
+          <Button asChild variant="logo" size="lg" style={delay(0.5)} className="hero-in glow-warm"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
         </div>
       </section>
 
