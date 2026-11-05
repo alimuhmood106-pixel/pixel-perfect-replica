@@ -174,7 +174,6 @@ function Index() {
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
-  const [isOpen, setIsOpen] = useState<boolean | null>(null);
   const heroVideoWrap = useRef<HTMLDivElement>(null);
   const contactVideoWrap = useRef<HTMLDivElement>(null);
   const [contactFailed, setContactFailed] = useState(false);
@@ -183,16 +182,6 @@ function Index() {
 
   useEffect(() => { const w = heroVideoWrap.current; return w ? mountLoop(w, HERO_SRC, setVideoFailed) : undefined; }, []);
   useEffect(() => { const w = contactVideoWrap.current; return w ? mountLoop(w, CONTACT_SRC, setContactFailed) : undefined; }, []);
-  useEffect(() => {
-    // Open daily 9 AM - 3 AM, Sulaymaniyah time (computed client-side so it is never stale in the server HTML)
-    const check = () => {
-      const h = Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Baghdad", hour: "2-digit", hourCycle: "h23" }).format(new Date()));
-      setIsOpen(h >= 9 || h < 3);
-    };
-    check();
-    const id = window.setInterval(check, 60000);
-    return () => window.clearInterval(id);
-  }, []);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
