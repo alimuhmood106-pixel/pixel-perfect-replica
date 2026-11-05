@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import { Phone, Instagram, Facebook, Flame, Bike, Clock, Smile, MapPin, Menu, X, ArrowUpRight, ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Phone, Instagram, Facebook, Flame, Bike, Clock, Smile, MapPin, Menu, X, ArrowUpRight, ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DICT, LANGS, type Lang } from "@/lib/i18n";
 import logo from "@/assets/logo.jpg.asset.json";
@@ -210,11 +210,13 @@ function Index() {
     ["gallery", t.nav.gallery], ["visit", t.nav.visit], ["contact", t.nav.contact],
   ] as const;
 
-  const heading = "font-display text-4xl sm:text-5xl text-foreground";
+  const heading = "heading-line font-display text-4xl sm:text-5xl text-foreground";
+  const delay = (s: number) => ({ "--d": `${s}s` }) as CSSProperties;
 
   return (
     <div className="page-root relative isolate min-h-screen bg-background text-foreground">
       <div aria-hidden className="wrapper-pattern" />
+      <div aria-hidden className="scroll-progress" />
       {/* Navbar */}
       <header className={`fixed inset-x-0 top-0 z-40 border-b-2 text-coal-foreground transition-[background-color,border-color,backdrop-filter] duration-300 ${scrolled || open ? "border-primary bg-coal/90 backdrop-blur-md" : "border-transparent bg-transparent"}`}>
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4">
@@ -225,7 +227,7 @@ function Index() {
             <span className="hidden font-display text-xl text-coal-foreground sm:inline">Malik Al-Sham</span>
           </a>
           <nav className="hidden items-center gap-5 text-sm lg:flex">
-            {links.map(([id, l]) => <a key={id} href={`#${id}`} className="hover:text-primary">{l}</a>)}
+            {links.map(([id, l]) => <a key={id} href={`#${id}`} className="nav-link hover:text-primary">{l}</a>)}
           </nav>
           <div className="flex items-center gap-2">
             <div className="flex rounded-lg border border-coal-foreground/25 p-0.5 text-xs">
@@ -252,16 +254,17 @@ function Index() {
         {videoFailed && <div aria-hidden className="hero-video-fallback"><img src="/hero-loop.webp" alt="" decoding="async" /></div>}
         <div aria-hidden className="hero-scrim" />
         <div className="hero-content relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 text-center">
-          <span className="hero-pill inline-flex items-center gap-2 rounded-full border border-primary/60 bg-coal/50 px-4 py-1.5 text-sm text-coal-foreground/90 backdrop-blur-sm"><Clock size={15} className="text-primary" />{t.hoursVal}</span>
-          <h1 className="mt-7">
+          <span style={delay(0.1)} className="hero-in hero-pill inline-flex items-center gap-2 rounded-full border border-primary/60 bg-coal/50 px-4 py-1.5 text-sm text-coal-foreground/90 backdrop-blur-sm"><Clock size={15} className="text-primary" />{t.hoursVal}</span>
+          <h1 style={delay(0.25)} className="hero-in mt-7">
             <img src="/logo-wordmark.png" alt={lang === "en" ? "Malik Al-Sham" : "ملك الشام"} width={1908} height={504} fetchPriority="high" className="block h-auto w-full max-w-xs sm:max-w-lg" />
           </h1>
-          <p className="mt-6 max-w-xl font-display text-2xl leading-snug text-coal-foreground sm:text-4xl">{t.tagline}</p>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <Button asChild variant="mustard" size="lg"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
+          <p style={delay(0.45)} className="hero-in mt-6 max-w-xl font-display text-2xl leading-snug text-coal-foreground sm:text-4xl">{t.tagline}</p>
+          <div style={delay(0.65)} className="hero-in mt-9 flex flex-wrap justify-center gap-3">
+            <Button asChild variant="logo" size="lg"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
             <Button asChild variant="outline" size="lg" className="border-primary bg-transparent text-primary hover:bg-primary/10 hover:text-primary"><a href="#popular">{t.viewDishes}<ArrowRight size={18} className="rtl:rotate-180" /></a></Button>
           </div>
         </div>
+        <a href="#popular" aria-label={t.nav.popular} className="hero-cue"><ChevronDown size={28} /></a>
       </section>
 
       {/* Popular */}
@@ -273,7 +276,7 @@ function Index() {
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {t.dishes.map(([name, desc], i) => (
-            <article key={i} className="reveal group overflow-hidden rounded-xl border border-border/60 border-t-4 border-t-primary bg-card shadow-warm">
+            <article key={i} style={delay((i % 3) * 0.1)} className="reveal lift group overflow-hidden rounded-xl border border-border/60 border-t-4 border-t-primary bg-card shadow-warm">
               <div className="aspect-[4/3] overflow-hidden"><img loading="lazy" src={dishImgs[i]?.url} alt={name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" /></div>
               <div className="p-6">
                 <span className="mb-3 inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-xs font-bold text-primary-foreground"><Flame size={12} className="flame-flicker" />{i === 0 ? t.chefFavorite : t.freshLabel}</span>
@@ -294,9 +297,9 @@ function Index() {
             <p className="mt-5 text-lg">{t.about1}</p>
             <p className="mt-4 text-lg text-muted-foreground">{t.about2}</p>
           </div>
-          <div className="reveal grid grid-cols-2 gap-4">
+          <div style={delay(0.15)} className="reveal grid grid-cols-2 gap-4">
             <img loading="lazy" src={carving.url} alt="Malik Al-Sham kitchen" className="arch-mask aspect-[3/4] w-full object-cover shadow-warm" />
-            <img loading="lazy" src={team.url} alt="Malik Al-Sham team" className="arch-mask mt-8 aspect-[3/4] w-full object-cover shadow-warm" />
+            <img loading="lazy" src={team.url} alt="Malik Al-Sham team" className="float-slow arch-mask mt-8 aspect-[3/4] w-full object-cover shadow-warm" />
           </div>
         </div>
       </section>
@@ -307,8 +310,8 @@ function Index() {
         <h2 className={`reveal text-center ${heading}`}>{t.whyTitle}</h2>
         <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
           {t.why.map((w, i) => { const I = whyIcons[i] ?? Flame; return (
-            <div key={i} className="reveal rounded-xl border border-wood/30 bg-card p-6 text-center shadow-warm">
-              <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary/60 text-secondary"><I /></div>
+            <div key={i} style={delay(i * 0.1)} className="reveal lift why-card rounded-xl border border-wood/30 bg-card p-6 text-center shadow-warm">
+              <div className="why-icon mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary/60 text-secondary"><I /></div>
               <p className="mt-4 font-bold">{w}</p>
             </div>); })}
         </div>
@@ -321,7 +324,7 @@ function Index() {
         <h2 className={`reveal text-center ${heading}`}>{t.galleryTitle}</h2>
         <div className="mt-10 columns-2 gap-3 md:columns-3">
           {gallery.map((g, i) => (
-            <Button variant="ghost" key={i} onClick={() => setLightbox(g.url)} aria-label={`${t.galleryTitle}: ${i + 1}`} className="reveal mb-3 block h-auto w-full overflow-hidden rounded-xl p-0">
+            <Button variant="ghost" key={i} onClick={() => setLightbox(g.url)} aria-label={`${t.galleryTitle}: ${i + 1}`} style={delay((i % 3) * 0.08)} className="reveal reveal-scale mb-3 block h-auto w-full overflow-hidden rounded-xl p-0">
               <img loading="lazy" src={g.url} alt={`Malik Al-Sham photo ${i + 1}`} className="w-full transition-transform duration-500 hover:scale-105" />
             </Button>
           ))}
@@ -356,7 +359,7 @@ function Index() {
           <h2 className="inline-block max-w-full rounded-2xl border-2 border-primary px-5 py-2 font-display text-3xl text-foreground sm:px-8 sm:text-5xl">{t.contactTitle}</h2>
           <a href={TEL} dir="ltr" className="mt-8 inline-block rounded-2xl border-2 border-primary bg-primary/15 px-4 py-4 text-2xl font-bold text-secondary transition-colors hover:bg-primary/35 sm:px-8 sm:text-4xl">+964 772 800 4848</a>
           <div className="mt-6 flex justify-center">
-            <Button asChild variant="mustard" size="lg" className="w-full sm:w-auto"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
+            <Button asChild variant="mustard" size="lg" className="glow-warm w-full sm:w-auto"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
           </div>
           <div className="mt-10 border-t border-border/60 pt-6 text-sm text-muted-foreground">
             <div className="flex items-center justify-center gap-2"><Clock size={16} className="shrink-0 text-secondary" />{t.hoursVal}</div>
@@ -380,7 +383,7 @@ function Index() {
       {/* Floating buttons */}
       <div className="fixed bottom-5 end-4 z-40 flex flex-col gap-3">
         <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-12 w-12 place-items-center rounded-full border border-border bg-card shadow-warm hover:text-secondary"><Instagram /></a>
-        <a href={TEL} aria-label={t.call} className="grid h-14 w-14 place-items-center rounded-full bg-logo-yellow text-primary-foreground sm:hidden"><Phone /></a>
+        <a href={TEL} aria-label={t.call} className="grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground glow-warm sm:hidden"><Phone /></a>
       </div>
     </div>
   );
