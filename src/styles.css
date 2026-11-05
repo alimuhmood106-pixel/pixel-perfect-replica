@@ -238,3 +238,8 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 @media (max-width: 640px) { .wrapper-pattern { background-size: 210px; opacity: 0.08; } }
 
 
+
+/* Contact: same looping video treatment as the hero, fading softly in at the top and out at the bottom */
+.contact-section { --hero-fade: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%); }
+.contact-video { background-image: url("/contact-poster.jpg"); }
+.contact-scrim { background: radial-gradient(ellipse at 50% 50%, color-mix(in oklab, var(--coal) 45%, transparent) 0%, color-mix(in oklab, var(--coal) 78%, transparent) 100%); }
