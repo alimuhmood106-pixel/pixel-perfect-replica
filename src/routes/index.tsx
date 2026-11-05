@@ -135,7 +135,7 @@ function mountLoop(wrap: HTMLDivElement, src: { image: string; frames: string; v
     v.muted = true;
     v.defaultMuted = true;
     // Keep the background video running: restart it whenever the browser pauses or stalls it.
-    const play = () => { if (v.paused && !document.hidden) v.play().catch(() => {}); };
+    const play = () => { if (v.paused && !document.hidden) Promise.resolve(v.play()).catch(() => {}); };
     const videoEvents = ["pause", "suspend", "stalled", "waiting", "emptied", "ended", "loadeddata", "canplay"] as const;
     videoEvents.forEach((e) => v.addEventListener(e, play));
     // iOS only counts touchend/click as a gesture (not touchstart or scroll), so retry on those too.
