@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { Phone, Instagram, Facebook, Flame, Bike, Clock, Smile, MapPin, Menu, X, ArrowUpRight, ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DICT, LANGS, type Lang } from "@/lib/i18n";
@@ -49,135 +49,19 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
-// The hero background is inserted on the client as raw HTML: a looping video on desktop (muted/autoplay attributes
-// must be real attributes or iOS blocks autoplay) and an animated image on phones, which iOS never pauses like it does video.
-const HERO_IMAGE_HTML = '<img src="/hero-loop.webp" alt="" decoding="async" fetchpriority="high">';
-const HERO_VIDEO_HTML = '<video autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" x-webkit-airplay="deny" tabindex="-1" poster="/hero-poster.jpg"><source src="/hero-loop.mp4" type="video/mp4"></video>';
-
 const dishImgs = [wrap, chicken, burger, pasta, plate];
 const gallery = [carving, meatCarving, wrap, chicken, burger, chickenBurger, pasta, plate, cheesyBake, team, interior];
 const whyIcons = [Flame, Bike, Clock, Smile];
 
-const HERO_SRC = { image: HERO_IMAGE_HTML, frames: "/hero-frames.bin", video: HERO_VIDEO_HTML };
-
-function mountLoop(wrap: HTMLDivElement, src: { image: string; frames: string; video: string }, setFailed: (f: boolean) => void): (() => void) | undefined {
-    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
-      // Phones: play pre-cut frames on a canvas. Animated WebP/GIF decode on the main thread and slow to ~5fps,
-      // so decode a few frames ahead off-thread (createImageBitmap) and draw each frame on a fixed 24fps clock.
-      const FPS = 24, AHEAD = 14, KEEP_BEHIND = 2;
-      let dead = false, raf = 0, n = 0;
-      const frames: Blob[] = [];
-      const bitmaps = new Map<number, ImageBitmap>();
-      const pending = new Set<number>();
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d", { alpha: false });
-      const showImage = () => { if (!dead) wrap.innerHTML = src.image; };
-      const decode = (i: number) => {
-        if (bitmaps.has(i) || pending.has(i)) return;
-        pending.add(i);
-        createImageBitmap(frames[i]!).then((bm) => {
-          pending.delete(i);
-          if (dead) { bm.close(); return; }
-          bitmaps.set(i, bm);
-        }, () => pending.delete(i));
-      };
-      const start = async () => {
-        try {
-          if (!ctx || !("createImageBitmap" in window)) throw new Error("no canvas");
-          const buf = await (await fetch(src.frames)).arrayBuffer();
-          if (dead) return;
-          const dv = new DataView(buf);
-          n = dv.getUint32(0, true);
-          let off = 4 + n * 4;
-          for (let i = 0; i < n; i++) { const len = dv.getUint32(4 + i * 4, true); frames.push(new Blob([new Uint8Array(buf, off, len)], { type: "image/webp" })); off += len; }
-          for (let i = 0; i < AHEAD; i++) decode(i);
-          const first = await createImageBitmap(frames[0]!);
-          if (dead) { first.close(); return; }
-          canvas.width = first.width; canvas.height = first.height;
-          bitmaps.set(0, first);
-          wrap.innerHTML = "";
-          wrap.appendChild(canvas);
-          const t0 = performance.now();
-          let last = -1, shown = 0;
-          const tick = (now: number) => {
-            if (dead) return;
-            const cur = Math.floor(((now - t0) / 1000) * FPS) % n;
-            if (cur !== last) {
-              for (let k = 0; k < AHEAD; k++) decode((cur + k) % n);
-              let bm = bitmaps.get(cur);
-              if (!bm) { for (let k = 1; k < AHEAD && !bm; k++) bm = bitmaps.get((cur - k + n) % n); } // not decoded yet: hold the previous frame
-              if (bm) { ctx!.drawImage(bm, 0, 0); shown = cur; }
-              last = cur;
-              for (const [i, b] of bitmaps) {
-                const ahead = (i - shown + n) % n;
-                if (ahead > AHEAD + 2 && ahead < n - KEEP_BEHIND) { b.close(); bitmaps.delete(i); }
-              }
-            }
-            raf = requestAnimationFrame(tick);
-          };
-          raf = requestAnimationFrame(tick);
-        } catch { showImage(); }
-      };
-      start();
-      return () => {
-        dead = true;
-        cancelAnimationFrame(raf);
-        bitmaps.forEach((b) => b.close());
-        bitmaps.clear();
-        wrap.innerHTML = "";
-      };
-    }
-    wrap.innerHTML = src.video;
-    const v = wrap.querySelector("video");
-    if (!v) return;
-    v.muted = true;
-    v.defaultMuted = true;
-    // Keep the background video running: restart it whenever the browser pauses or stalls it.
-    const play = () => { if (v.paused && !document.hidden) Promise.resolve(v.play()).catch(() => {}); };
-    const videoEvents = ["pause", "suspend", "stalled", "waiting", "emptied", "ended", "loadeddata", "canplay"] as const;
-    videoEvents.forEach((e) => v.addEventListener(e, play));
-    // iOS only counts touchend/click as a gesture (not touchstart or scroll), so retry on those too.
-    const windowEvents = ["touchend", "pointerup", "click", "keydown", "scroll", "focus", "pageshow", "resize", "orientationchange"] as const;
-    windowEvents.forEach((e) => window.addEventListener(e, play, { passive: true }));
-    document.addEventListener("visibilitychange", play);
-    const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && play()));
-    io.observe(wrap);
-    const timer = window.setInterval(play, 700);
-    // Backup: if the video never starts (or the file fails), show an animated image instead.
-    const onPlaying = () => setFailed(false);
-    const onError = () => setFailed(true);
-    v.addEventListener("playing", onPlaying);
-    v.addEventListener("error", onError);
-    const source = v.querySelector("source");
-    source?.addEventListener("error", onError);
-    const check = window.setTimeout(() => { if (v.paused || v.currentTime === 0) setFailed(true); }, 2500);
-    play();
-    return () => {
-      videoEvents.forEach((e) => v.removeEventListener(e, play));
-      windowEvents.forEach((e) => window.removeEventListener(e, play));
-      document.removeEventListener("visibilitychange", play);
-      v.removeEventListener("playing", onPlaying);
-      v.removeEventListener("error", onError);
-      source?.removeEventListener("error", onError);
-      io.disconnect();
-      window.clearInterval(timer);
-      window.clearTimeout(check);
-      wrap.innerHTML = "";
-    };
-}
 
 function Index() {
   const [lang, setLang] = useState<Lang>("en");
   const [open, setOpen] = useState(false);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const heroVideoWrap = useRef<HTMLDivElement>(null);
   const t = DICT[lang];
   const rtl = lang !== "en";
 
-  useEffect(() => { const w = heroVideoWrap.current; return w ? mountLoop(w, HERO_SRC, setVideoFailed) : undefined; }, []);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
@@ -252,8 +136,7 @@ function Index() {
 
       {/* Hero */}
       <section id="home" className="hero-section relative isolate flex min-h-svh flex-col overflow-hidden text-coal-foreground">
-        <div ref={heroVideoWrap} aria-hidden className="hero-video" />
-        {videoFailed && <div aria-hidden className="hero-video-fallback"><img src="/hero-loop.webp" alt="" decoding="async" /></div>}
+        <div aria-hidden className="hero-video" />
         <div aria-hidden className="hero-scrim" />
         <div className="hero-content relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 text-center">
           <span style={delay(0.1)} className="hero-in hero-pill inline-flex items-center gap-2 rounded-full border border-primary/60 bg-coal/50 px-4 py-1.5 text-sm text-coal-foreground/90 backdrop-blur-sm"><Clock size={15} className="text-primary" />{t.hoursVal}</span>
