@@ -60,6 +60,7 @@ const gallery = [carving, meatCarving, wrap, chicken, burger, chickenBurger, pas
 const whyIcons = [Flame, Bike, Clock, Smile];
 
 const HERO_SRC = { image: HERO_IMAGE_HTML, frames: "/hero-frames.bin", video: HERO_VIDEO_HTML };
+const CONTACT_SRC = { image: '<img src="/contact-poster.jpg" alt="" decoding="async">', frames: "/contact-frames.bin", video: HERO_VIDEO_HTML.replaceAll("hero-poster", "contact-poster").replace("hero-loop.mp4", "contact-loop.mp4").replace('preload="auto"', 'preload="metadata"') };
 
 function mountLoop(wrap: HTMLDivElement, src: { image: string; frames: string; video: string }, setFailed: (f: boolean) => void): (() => void) | undefined {
     if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
@@ -185,10 +186,13 @@ function Index() {
   }, []);
   const [videoFailed, setVideoFailed] = useState(false);
   const heroVideoWrap = useRef<HTMLDivElement>(null);
+  const contactVideoWrap = useRef<HTMLDivElement>(null);
+  const [contactFailed, setContactFailed] = useState(false);
   const t = DICT[lang];
   const rtl = lang !== "en";
 
   useEffect(() => { const w = heroVideoWrap.current; return w ? mountLoop(w, HERO_SRC, setVideoFailed) : undefined; }, []);
+  useEffect(() => { const w = contactVideoWrap.current; return w ? mountLoop(w, CONTACT_SRC, setContactFailed) : undefined; }, []);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
@@ -367,7 +371,8 @@ function Index() {
 
       {/* Contact */}
       <section id="contact" className="contact-section relative isolate flex items-center justify-center overflow-hidden px-4 py-28 text-coal-foreground">
-        <div aria-hidden className="hero-video contact-video" />
+        <div ref={contactVideoWrap} aria-hidden className="hero-video contact-video" />
+        {contactFailed && <div aria-hidden className="hero-video-fallback contact-video"><img src="/contact-poster.jpg" alt="" decoding="async" /></div>}
         <div aria-hidden className="hero-scrim contact-scrim" />
         <div className="reveal relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-7 px-6 text-center">
           <h2 className="heading-line font-display text-4xl text-coal-foreground sm:text-5xl">{t.contactTitle}</h2>
