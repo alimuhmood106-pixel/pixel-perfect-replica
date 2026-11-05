@@ -240,6 +240,13 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 
 
 /* Contact: same looping video treatment as the hero, fading softly in at the top and out at the bottom */
-.contact-section { --hero-fade: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%); }
+.contact-section { --hero-fade: linear-gradient(to bottom, #000 0%, #000 84%, transparent 100%); }
+/* Top border: a gold rule that fades out toward the sides, with a thin echo line beneath it and a soft shade under both. */
+.contact-section::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 14px; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, var(--logo-yellow) 8%, var(--logo-yellow) 92%, transparent) top / 100% 3px no-repeat,
+    linear-gradient(90deg, transparent 8%, color-mix(in oklab, var(--logo-yellow) 70%, transparent) 30%, color-mix(in oklab, var(--logo-yellow) 70%, transparent) 70%, transparent 92%) 0 9px / 100% 1px no-repeat; }
+.contact-section::after { content: ""; position: absolute; inset: 0 0 auto 0; height: 90px; z-index: 1; pointer-events: none;
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--coal) 55%, transparent), transparent); }
 .contact-video { background-image: url("/contact-poster.jpg"); }
 .contact-scrim { background: radial-gradient(ellipse at 50% 50%, color-mix(in oklab, var(--coal) 45%, transparent) 0%, color-mix(in oklab, var(--coal) 78%, transparent) 100%); }
