@@ -71,8 +71,70 @@ function Index() {
     const wrap = heroVideoWrap.current;
     if (!wrap) return;
     if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
-      wrap.innerHTML = HERO_IMAGE_HTML;
-      return () => { wrap.innerHTML = ""; };
+      // Phones: play pre-cut frames on a canvas. Animated WebP/GIF decode on the main thread and slow to ~5fps,
+      // so decode a few frames ahead off-thread (createImageBitmap) and draw each frame on a fixed 24fps clock.
+      const FPS = 24, AHEAD = 14, KEEP_BEHIND = 2;
+      let dead = false, raf = 0, n = 0;
+      const frames: Blob[] = [];
+      const bitmaps = new Map<number, ImageBitmap>();
+      const pending = new Set<number>();
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const showImage = () => { if (!dead) wrap.innerHTML = HERO_IMAGE_HTML; };
+      const decode = (i: number) => {
+        if (bitmaps.has(i) || pending.has(i)) return;
+        pending.add(i);
+        createImageBitmap(frames[i]).then((bm) => {
+          pending.delete(i);
+          if (dead) { bm.close(); return; }
+          bitmaps.set(i, bm);
+        }, () => pending.delete(i));
+      };
+      const start = async () => {
+        try {
+          if (!ctx || !("createImageBitmap" in window)) throw new Error("no canvas");
+          const buf = await (await fetch("/hero-frames.bin")).arrayBuffer();
+          if (dead) return;
+          const dv = new DataView(buf);
+          n = dv.getUint32(0, true);
+          let off = 4 + n * 4;
+          for (let i = 0; i < n; i++) { const len = dv.getUint32(4 + i * 4, true); frames.push(new Blob([new Uint8Array(buf, off, len)], { type: "image/webp" })); off += len; }
+          for (let i = 0; i < AHEAD; i++) decode(i);
+          const first = await createImageBitmap(frames[0]);
+          if (dead) { first.close(); return; }
+          canvas.width = first.width; canvas.height = first.height;
+          bitmaps.set(0, first);
+          wrap.innerHTML = "";
+          wrap.appendChild(canvas);
+          const t0 = performance.now();
+          let last = -1, shown = 0;
+          const tick = (now: number) => {
+            if (dead) return;
+            const cur = Math.floor(((now - t0) / 1000) * FPS) % n;
+            if (cur !== last) {
+              for (let k = 0; k < AHEAD; k++) decode((cur + k) % n);
+              let bm = bitmaps.get(cur);
+              if (!bm) { for (let k = 1; k < AHEAD && !bm; k++) bm = bitmaps.get((cur - k + n) % n); } // not decoded yet: hold the previous frame
+              if (bm) { ctx!.drawImage(bm, 0, 0); shown = cur; }
+              last = cur;
+              for (const [i, b] of bitmaps) {
+                const ahead = (i - shown + n) % n;
+                if (ahead > AHEAD + 2 && ahead < n - KEEP_BEHIND) { b.close(); bitmaps.delete(i); }
+              }
+            }
+            raf = requestAnimationFrame(tick);
+          };
+          raf = requestAnimationFrame(tick);
+        } catch { showImage(); }
+      };
+      start();
+      return () => {
+        dead = true;
+        cancelAnimationFrame(raf);
+        bitmaps.forEach((b) => b.close());
+        bitmaps.clear();
+        wrap.innerHTML = "";
+      };
     }
     wrap.innerHTML = HERO_VIDEO_HTML;
     const v = wrap.querySelector("video");
