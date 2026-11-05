@@ -219,18 +219,11 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 @keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
 .float-slow { animation: float-y 7s ease-in-out infinite; }
 
-/* Thin reading-progress line at the very top (browsers without scroll timelines just don't show it) */
-.scroll-progress { position: fixed; top: 0; inset-inline: 0; z-index: 60; height: 3px; background: var(--primary); transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
-html[dir="rtl"] .scroll-progress { transform-origin: 100% 50%; }
-@keyframes progress-grow { to { transform: scaleX(1); } }
-@supports (animation-timeline: scroll()) { .scroll-progress { animation: progress-grow linear both; animation-timeline: scroll(root block); } }
-
 ::selection { background: color-mix(in oklab, var(--primary) 70%, transparent); color: var(--foreground); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal, .flame-flicker, .hero-in, .hero-cue, .float-slow, .glow-warm { animation: none; opacity: 1; transform: none; transition: none; }
-  .scroll-progress { display: none; }
   .heading-line::after { width: 4rem; transition: none; }
   .lift:hover, .why-card:hover .why-icon { translate: none; transform: none; }
 }

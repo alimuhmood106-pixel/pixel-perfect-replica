@@ -228,7 +228,6 @@ function Index() {
   return (
     <div className="page-root relative isolate min-h-screen bg-background text-foreground">
       <div aria-hidden className="wrapper-pattern" />
-      <div aria-hidden className="scroll-progress" />
       {/* Navbar */}
       <header className={`fixed inset-x-0 top-0 z-40 border-b-2 text-coal-foreground transition-[background-color,border-color,backdrop-filter] duration-300 ${scrolled || open ? "border-primary bg-coal/90 backdrop-blur-md" : "border-transparent bg-transparent"}`}>
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4">
