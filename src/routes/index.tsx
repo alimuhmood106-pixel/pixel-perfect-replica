@@ -19,8 +19,8 @@ import interior from "@/assets/interior.jpg.asset.json";
 const TEL = "tel:+9647728004848";
 const IG = "https://instagram.com/malik_al_sham";
 const FB = "https://www.facebook.com/malikalshamSuly";
-// Exact coordinates of Plus Code HC53+M3P (Malik Al-Sham), so the map pin doesn't depend on a fuzzy text search.
-const MAP_Q = "35.559187,45.402687";
+// Exact pin of the Malik Al-Sham listing on Google Maps (Plus Code HC53+R66), so the map doesn't depend on a text search.
+const MAP_Q = "35.5595393,45.4030194";
 
 const schema = {
   "@context": "https://schema.org",
@@ -29,7 +29,8 @@ const schema = {
   alternateName: "ملك الشام",
   servesCuisine: ["Shawarma", "Middle Eastern", "Grill", "Fast Food"],
   telephone: "+964 772 800 4848",
-  address: { "@type": "PostalAddress", streetAddress: "HC53+M3P", addressLocality: "Sulaymaniyah", addressCountry: "IQ" },
+  address: { "@type": "PostalAddress", streetAddress: "HC53+R66", addressLocality: "Sulaymaniyah", addressCountry: "IQ" },
+  geo: { "@type": "GeoCoordinates", latitude: 35.5595393, longitude: 45.4030194 },
   openingHoursSpecification: [{ "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], opens: "09:00", closes: "03:00" }],
   sameAs: [IG, FB],
 };
@@ -344,7 +345,7 @@ function Index() {
           <div className="reveal space-y-6">
             <Flame className="flame-flicker text-secondary" size={28} />
             <h2 className={heading}>{t.visitTitle}</h2>
-            <div className="flex gap-3"><MapPin className="shrink-0 text-secondary" /><div><p className="font-bold">{t.address}</p><p className="text-muted-foreground" dir="ltr">HC53+M3P, Sulaymaniyah, Iraq</p></div></div>
+            <div className="flex gap-3"><MapPin className="shrink-0 text-secondary" /><div><p className="font-bold">{t.address}</p><p className="text-muted-foreground" dir="ltr">HC53+R66, Sulaymaniyah, Iraq</p></div></div>
             <div className="flex gap-3"><Clock className="shrink-0 text-secondary" /><div><p className="font-bold">{t.hours}</p><p className="text-muted-foreground">{t.hoursVal}</p></div></div>
             <Button asChild><a href={`https://www.google.com/maps/dir/?api=1&destination=${MAP_Q}`} target="_blank" rel="noopener noreferrer"><MapPin size={18} />{t.directions}<ArrowUpRight size={16} /></a></Button>
           </div>
