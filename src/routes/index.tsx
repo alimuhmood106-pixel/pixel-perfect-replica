@@ -210,7 +210,7 @@ function Index() {
     ["gallery", t.nav.gallery], ["visit", t.nav.visit], ["contact", t.nav.contact],
   ] as const;
 
-  const heading = "heading-glow font-display text-4xl sm:text-5xl text-foreground";
+  const heading = "font-display text-4xl sm:text-5xl text-foreground";
 
   return (
     <div className="page-root relative isolate min-h-screen bg-background text-foreground">
@@ -356,7 +356,7 @@ function Index() {
           <h2 className="inline-block max-w-full rounded-2xl border-2 border-primary px-5 py-2 font-display text-3xl text-foreground sm:px-8 sm:text-5xl">{t.contactTitle}</h2>
           <a href={TEL} dir="ltr" className="mt-8 inline-block rounded-2xl border-2 border-primary bg-primary/15 px-4 py-4 text-2xl font-bold text-secondary transition-colors hover:bg-primary/35 sm:px-8 sm:text-4xl">+964 772 800 4848</a>
           <div className="mt-6 flex justify-center">
-            <Button asChild variant="mustard" size="lg" className="glow-warm w-full sm:w-auto"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
+            <Button asChild variant="mustard" size="lg" className="w-full sm:w-auto"><a href={TEL}><Phone size={18} />{t.orderCall}</a></Button>
           </div>
           <div className="mt-10 border-t border-border/60 pt-6 text-sm text-muted-foreground">
             <div className="flex items-center justify-center gap-2"><Clock size={16} className="shrink-0 text-secondary" />{t.hoursVal}</div>
@@ -380,7 +380,7 @@ function Index() {
       {/* Floating buttons */}
       <div className="fixed bottom-5 end-4 z-40 flex flex-col gap-3">
         <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-12 w-12 place-items-center rounded-full border border-border bg-card shadow-warm hover:text-secondary"><Instagram /></a>
-        <a href={TEL} aria-label={t.call} className="grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground glow-warm sm:hidden"><Phone /></a>
+        <a href={TEL} aria-label={t.call} className="grid h-14 w-14 place-items-center rounded-full bg-logo-yellow text-primary-foreground sm:hidden"><Phone /></a>
       </div>
     </div>
   );

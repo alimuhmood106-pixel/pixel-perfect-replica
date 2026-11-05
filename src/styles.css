@@ -33,6 +33,7 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-logo-yellow: var(--logo-yellow);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -79,6 +80,7 @@
   --popover-foreground: var(--foreground);
   /* mustard yellow */
   --primary: oklch(0.79 0.15 87);
+  --logo-yellow: #fdd904; /* the yellow of "Malik Al-Sham" in the logo, sampled from logo-wordmark.png */
   --primary-foreground: oklch(0.22 0.01 60);
   /* brick red */
   --secondary: oklch(0.5 0.13 38);
@@ -101,7 +103,6 @@
   --input: var(--border);
   --ring: var(--secondary);
   --shadow-warm: 0 14px 34px -16px color-mix(in oklab, var(--wood) 45%, transparent);
-  --glow-warm: 0 0 42px 6px color-mix(in oklab, var(--primary) 45%, transparent);
   --chart-1: oklch(0.5 0.13 38);
   --chart-2: oklch(0.79 0.15 87);
   --chart-3: oklch(0.62 0.09 62);
@@ -129,27 +130,12 @@
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: 96px; overflow-x: hidden; overflow-x: clip; }
-/* Decorative bleed (heading glows, offset badges) must never create sideways scroll on mobile, in LTR or RTL */
+/* Decorative bleed (offset badges) must never create sideways scroll on mobile, in LTR or RTL */
 .page-root { overflow-x: clip; }body { font-family: var(--font-sans); letter-spacing: 0; }
 html[dir="rtl"] body { font-family: "Noto Naskh Arabic", serif; }
 html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 @utility shadow-warm { box-shadow: var(--shadow-warm); }
-@utility glow-warm { box-shadow: var(--glow-warm); }
 @utility arch-mask { border-radius: 999px 999px var(--radius-xl) var(--radius-xl); }
-
-/* soft warm glow behind key headings, like the ring lights */
-@utility heading-glow {
-  position: relative;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: -30% -18%;
-    z-index: -1;
-    border-radius: 999px;
-    background: radial-gradient(closest-side, color-mix(in oklab, var(--primary) 38%, transparent), transparent);
-    filter: blur(10px);
-  }
-}
 
 /* subtle concrete grain on alternating sections */
 @utility grain {
