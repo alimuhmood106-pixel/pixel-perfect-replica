@@ -165,6 +165,8 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
 @utility flame-flicker { animation: flame-flicker 2.6s ease-in-out infinite; transform-origin: 50% 90%; }
 
 /* Hero: low-key looping video behind a warm charcoal scrim that fades into the page background */
+.hero-section { min-height: var(--lock-h, 100svh); }
+.contact-section { min-height: calc(var(--lock-h, 100svh) * 0.7); }
 .hero-section { padding-top: 80px; background-size: cover; background-position: center; }
 .hero-video { background-attachment: scroll; background-repeat: no-repeat; }
 .hero-video, .hero-scrim { -webkit-mask-image: var(--hero-fade); mask-image: var(--hero-fade); }

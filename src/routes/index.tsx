@@ -59,6 +59,17 @@ function Index() {
   const [open, setOpen] = useState(false);
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  // Phone browsers (Chrome/Safari on iOS) hide their toolbar while scrolling, which changes the viewport height and made the
+  // hero and contact backgrounds resize and jump. Measure the height once and only re-measure when the width changes (rotation).
+  useEffect(() => {
+    const root = document.documentElement;
+    let w = window.innerWidth;
+    const lock = () => root.style.setProperty("--lock-h", `${window.innerHeight}px`);
+    const onResize = () => { if (window.innerWidth !== w) { w = window.innerWidth; lock(); } };
+    lock();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
   const t = DICT[lang];
   const rtl = lang !== "en";
 
@@ -135,7 +146,7 @@ function Index() {
       </header>
 
       {/* Hero */}
-      <section id="home" className="hero-section relative isolate flex min-h-svh flex-col overflow-hidden text-coal-foreground">
+      <section id="home" className="hero-section relative isolate flex flex-col overflow-hidden text-coal-foreground">
         <div aria-hidden className="hero-video" />
         <div aria-hidden className="hero-scrim" />
         <div className="hero-content relative z-10 mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-6 text-center">
@@ -238,7 +249,7 @@ function Index() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="contact-section relative isolate flex min-h-[70svh] items-center justify-center overflow-hidden px-4 py-28 text-coal-foreground">
+      <section id="contact" className="contact-section relative isolate flex items-center justify-center overflow-hidden px-4 py-28 text-coal-foreground">
         <div aria-hidden className="hero-video contact-video" />
         <div aria-hidden className="hero-scrim contact-scrim" />
         <div className="reveal relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-7 px-6 text-center">
