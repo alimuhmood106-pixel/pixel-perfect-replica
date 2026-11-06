@@ -230,14 +230,6 @@ html[dir="rtl"] .font-display { font-family: "Noto Naskh Arabic", serif; }
   .lift:hover, .why-card:hover .why-icon { translate: none; transform: none; }
 }
 
-/* Faint wrapper-paper watermark behind cream/sand sections */
-.wrapper-pattern {
-  position: fixed; inset: -50vmax; z-index: -1; pointer-events: none;
-  background-image: url("/__l5e/assets-v1/07232c14-518d-4210-b7e4-bad129a65bb1/wrapper-pattern.png");
-  background-repeat: repeat; background-size: 250px;
-  transform: rotate(40deg); opacity: 0.09; filter: saturate(0.7);
-}
-@media (max-width: 640px) { .wrapper-pattern { background-size: 210px; opacity: 0.08; } }
 
 
 

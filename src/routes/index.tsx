@@ -3,18 +3,18 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Phone, Instagram, Facebook, Flame, Bike, Clock, Smile, MapPin, Menu, X, ArrowUpRight, ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DICT, LANGS, type Lang } from "@/lib/i18n";
-import logo from "@/assets/logo.jpg.asset.json";
-import carving from "@/assets/shawarma-carving.jpg.asset.json";
-import meatCarving from "@/assets/meat-carving.jpg.asset.json";
-import chickenBurger from "@/assets/chicken-burger.jpg.asset.json";
-import cheesyBake from "@/assets/cheesy-bake.jpg.asset.json";
-import wrap from "@/assets/shawarma-wrap.jpg.asset.json";
-import chicken from "@/assets/grilled-chicken.jpg.asset.json";
-import burger from "@/assets/cheeseburger.jpg.asset.json";
-import pasta from "@/assets/cheesy-pasta.jpg.asset.json";
-import plate from "@/assets/chicken-plate.jpg.asset.json";
-import team from "@/assets/team.jpg.asset.json";
-import interior from "@/assets/interior.jpg.asset.json";
+const logo = { url: "/img/logo.jpg" };
+const carving = { url: "/img/shawarma-carving.jpg" };
+const meatCarving = { url: "/img/meat-carving.jpg" };
+const chickenBurger = { url: "/img/chicken-burger.jpg" };
+const cheesyBake = { url: "/img/cheesy-bake.jpg" };
+const wrap = { url: "/img/shawarma-wrap.jpg" };
+const chicken = { url: "/img/grilled-chicken.jpg" };
+const burger = { url: "/img/cheeseburger.jpg" };
+const pasta = { url: "/img/cheesy-pasta.jpg" };
+const plate = { url: "/img/chicken-plate.jpg" };
+const team = { url: "/img/team.jpg" };
+const interior = { url: "/img/interior.jpg" };
 
 const TEL = "tel:+9647728004848";
 const IG = "https://instagram.com/malik_al_sham";
@@ -233,7 +233,6 @@ function Index() {
 
   return (
     <div className="page-root relative isolate min-h-screen bg-background text-foreground">
-      <div aria-hidden className="wrapper-pattern" />
       {/* Navbar */}
       <header className={`fixed inset-x-0 top-0 z-40 border-b-2 text-coal-foreground transition-[background-color,border-color,backdrop-filter] duration-300 ${scrolled || open ? "border-primary bg-coal/90 backdrop-blur-md" : "border-transparent bg-transparent"}`}>
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4">
